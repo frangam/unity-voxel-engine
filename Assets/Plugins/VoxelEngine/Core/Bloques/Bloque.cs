@@ -17,13 +17,17 @@ public class Bloque : IBloque {
 		this.tipo = tipo;
 	}
 	
-	public bool esSolido()
+	public bool esDibujable()
 	{
 		return false;
 	}
 	public Vector2 posicionUVTexturaCaraInferior()
 	{
 		return TiposBloques.getBloque(tipo).posicionUVTexturaCaraInferior();
+	}
+	public Vector2 posicionUVTexturaCaraSuperior()
+	{
+		return TiposBloques.getBloque(tipo).posicionUVTexturaCaraSuperior();
 	}
 	public Vector2 posicionUVTexturaCaraLaterales()
 	{
@@ -37,9 +41,9 @@ public class Bloque : IBloque {
 	{
 		return TiposBloques.getBloque(tipo).destruirse(this);
 	}
-	public bool crearse(Bloque bloque, TipoBloque tipoBloque)
+	public bool crearse(Bloque bloque, TipoBloque tipoNuevo)
 	{
-		return TiposBloques.getBloque(tipo).crearse(this,tipoBloque);
+		return TiposBloques.getBloque(tipo).crearse(this,tipoNuevo);
 	}
 	
 	public TipoBloque Tipo { get { return tipo; } set { tipo = value; } }

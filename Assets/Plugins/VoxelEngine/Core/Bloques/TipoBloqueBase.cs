@@ -11,6 +11,10 @@ public class TipoBloqueBase : IBloque {
 	{
 		return Vector2.zero;
 	}
+	public virtual Vector2 posicionUVTexturaCaraSuperior()
+	{
+		return Vector2.zero;
+	}
 	public virtual Vector2 posicionUVTexturaCaraLaterales()
 	{
 		return Vector2.zero;
@@ -29,14 +33,14 @@ public class TipoBloqueBase : IBloque {
 		bloque.Tipo = TipoBloque.VACIO;
 		return true;
 	}
-	public virtual bool crearse(Bloque bloque, TipoBloque tipo)
+	public virtual bool crearse(Bloque bloque, TipoBloque tipoNuevo)
 	{
 		if(!esSolido()){
 			return false;
 		}if(bloque.Chunk != null){
 			//activar seHaModificadoElChunk();
 		}
-		bloque.Tipo = tipo; 
+		bloque.Tipo = tipoNuevo; 
 		return true;
 	}
 }
