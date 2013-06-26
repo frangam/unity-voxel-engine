@@ -41,9 +41,9 @@ public class Bloque : IBloque {
 	{
 		return TiposBloques.getBloque(tipo).destruirse(this);
 	}
-	public bool crearse(Bloque bloque, TipoBloque tipoNuevo)
+	public bool crearse(Bloque bloque, TipoBloque tipoBloque)
 	{
-		return TiposBloques.getBloque(tipo).crearse(this,tipoNuevo);
+		return TiposBloques.getBloque(tipo).crearse(this,tipoBloque);
 	}
 	
 	public TipoBloque Tipo { get { return tipo; } set { tipo = value; } }

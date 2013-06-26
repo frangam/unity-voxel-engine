@@ -3,7 +3,7 @@ using System.Collections;
 
 public class TipoBloqueBase : IBloque {
 	
-	public virtual bool esSolido(){
+	public virtual bool esDibujable(){
 		return false;
 	}
 	
@@ -25,22 +25,22 @@ public class TipoBloqueBase : IBloque {
 	}
 	public virtual bool destruirse(Bloque bloque)
 	{
-		if(!esSolido()){
+		if(!esDibujable()){
 			return false;
 		}if(bloque.Chunk != null){
-			//activar seHaModificadoElChunk();
+			bloque.Chunk.seHaModificadoElChunk();
 		}
 		bloque.Tipo = TipoBloque.VACIO;
 		return true;
 	}
-	public virtual bool crearse(Bloque bloque, TipoBloque tipoNuevo)
+	public virtual bool crearse(Bloque bloque, TipoBloque tipo)
 	{
-		if(!esSolido()){
+		if(!esDibujable()){
 			return false;
 		}if(bloque.Chunk != null){
-			//activar seHaModificadoElChunk();
+			bloque.Chunk.seHaModificadoElChunk();
 		}
-		bloque.Tipo = tipoNuevo; 
+		bloque.Tipo = tipo; 
 		return true;
 	}
 }
