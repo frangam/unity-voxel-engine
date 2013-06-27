@@ -17,21 +17,21 @@ public class ChunkRender {
 		_subMallasChunk.Clear();
 		Bloque bloque = null;
 		
-		for(int x=0; x < chunk.getNumBloquesEnX; x++)
+		for(int x=0; x < chunk.getNumBloquesEnX(); x++)
 		{
-			for(int y=0; y < chunk.getNumBloquesEnY; y++)
+			for(int y=0; y < chunk.getNumBloquesEnY(); y++)
 			{
-				for(int z=0; z < chunk.getNumBloquesEnZ; z++)
+				for(int z=0; z < chunk.getNumBloquesEnZ(); z++)
 				{
 					Vector3 posicionBloque = new Vector3(x,y,z);
 					//miramos los vecinos.
-					bloque = chunk[x, y, z];                    
-                    Bloque arriba = chunk[x, y + 1, z];
-					Bloque abajo = chunk[x, y - 1, z];
-					Bloque frente = chunk[x, y, z +1];
-					Bloque atras = chunk[x, y, z - 1];
-					Bloque izquierda = chunk[x + 1, y, z];
-					Bloque derecha = chunk[x - 1, y, z];
+					bloque = chunk.getBloque(x, y, z);                    
+                    Bloque arriba = chunk.getBloque(x, y + 1, z);
+					Bloque abajo = chunk.getBloque(x, y - 1, z);
+					Bloque frente = chunk.getBloque(x, y, z +1);
+					Bloque atras = chunk.getBloque(x, y, z - 1);
+					Bloque izquierda = chunk.getBloque(x + 1, y, z);
+					Bloque derecha = chunk.getBloque(x - 1, y, z);
 					
 					//miramos si hace falta dibujar ese bloque.
 					if(bloque != null && bloque.esDibujable())
@@ -73,13 +73,9 @@ public class ChunkRender {
 				}
 			}
 		}
-		
-		/*
-		 *     mesh.vertices = verts;
-  	mesh.triangles = tri;
-    mesh.uv = uv;
-    mesh.subMeshCount = 3;  
-		 * */
+//		List<TipoBloque> listaTipos = new List<TipoBloque>(_subMallasChunk.Keys);
+//		MaterialesDelChunk.inicializarMateriales(chunk.ToString(), listaTipos);
+			
 		Mesh mesh = new Mesh();
 		mesh.vertices = verticiesMallaChunk.ToArray();
 		mesh.uv = uvCoorTexturaMallaChunk.ToArray();
@@ -87,7 +83,6 @@ public class ChunkRender {
 		int i = 1;
 		foreach(KeyValuePair<TipoBloque,SubMallaChunk> smc in _subMallasChunk)
 		{
-	
 			mesh.SetTriangles(smc.Value.getTriangulos().ToArray(), i);
 			i++;
 		}
