@@ -1,17 +1,17 @@
 using UnityEngine;
 using System.Collections;
 
-/// <summary>
-/// 	Clase que representa los bloques que tendra el mapa.
-/// </summary>
-/// 
+// <summary>
+// 	Clase que representa los bloques que tendra el mapa.
+// </summary>
+ 
 public class Bloque : IBloque {
 
-	private int xTerreno = 0;
-	private int yTerreno = 0;
-	private int zTerreno = 0;
-	private TipoBloque tipo;
-	private Chunk chunk;
+	private int _xTerreno = 0;
+	private int _yTerreno = 0;
+	private int _zTerreno = 0;
+	private TipoBloque _tipo;
+	private Chunk _chunk;
 	
 	/// <summary>
 	/// 	Inicializamos una nueva instacia de la clase <see cref="Bloque"/>.
@@ -30,10 +30,10 @@ public class Bloque : IBloque {
 	/// </param>
 	public Bloque(TipoBloque tipo, int xTerreno, int yTerreno, int zTerreno)
 	{
-		this.xTerreno = xTerreno;
-		this.xTerreno = xTerreno;
-		this.xTerreno = xTerreno;
-		this.tipo = tipo;
+		this._xTerreno = xTerreno;
+		this._yTerreno = yTerreno;
+		this._zTerreno = zTerreno;
+		this._tipo = tipo;
 	}
 	
 	/// <summary>
@@ -55,7 +55,7 @@ public class Bloque : IBloque {
 	/// </returns>
 	public Vector2 posicionUVTexturaCaraInferior()
 	{
-		return TiposBloques.getBloque(tipo).posicionUVTexturaCaraInferior();
+		return TiposBloques.getBloque(_tipo).posicionUVTexturaCaraInferior();
 	}
 	
 	/// <summary>
@@ -66,7 +66,7 @@ public class Bloque : IBloque {
 	/// </returns>
 	public Vector2 posicionUVTexturaCaraSuperior()
 	{
-		return TiposBloques.getBloque(tipo).posicionUVTexturaCaraSuperior();
+		return TiposBloques.getBloque(_tipo).posicionUVTexturaCaraSuperior();
 	}
 	
 	/// <summary>
@@ -77,7 +77,7 @@ public class Bloque : IBloque {
 	/// </returns>
 	public Vector2 posicionUVTexturaCaraLaterales()
 	{
-		return TiposBloques.getBloque(tipo).posicionUVTexturaCaraLaterales();
+		return TiposBloques.getBloque(_tipo).posicionUVTexturaCaraLaterales();
 	}
 	
 	/// <summary>
@@ -88,7 +88,7 @@ public class Bloque : IBloque {
 	/// </returns>
 	public Vector2 posicionUVTexturaCara()
 	{
-		return TiposBloques.getBloque(tipo).posicionUVTexturaCara();
+		return TiposBloques.getBloque(_tipo).posicionUVTexturaCara();
 	}
 	/// <summary>
 	/// 	Destruimos el bloque actual.
@@ -98,7 +98,7 @@ public class Bloque : IBloque {
 	/// </returns>
 	public bool destruirse()
 	{
-		return TiposBloques.getBloque(tipo).destruirse(this);
+		return TiposBloques.getBloque(_tipo).destruirse(this);
 	}
 	
 	/// <summary>
@@ -112,7 +112,7 @@ public class Bloque : IBloque {
 	/// </returns>
 	public bool crearse(TipoBloque tipoBloque)
 	{
-		return TiposBloques.getBloque(tipo).crearse(this,tipoBloque);
+		return TiposBloques.getBloque(_tipo).crearse(this,tipoBloque);
 	}
 	
 	/// <summary>
@@ -122,7 +122,7 @@ public class Bloque : IBloque {
 	///  	TipoBloque.
 	/// </returns>
 	public TipoBloque getTipo() {
-		return tipo; 
+		return _tipo; 
 	} 
 	/// <summary>
 	/// 	Cambia el TipoBloque del Bloque.
@@ -131,7 +131,7 @@ public class Bloque : IBloque {
 	/// 	TipoBloque nuevo.
 	/// </param>
 	public void setTipo(TipoBloque tipo) { 
-		this.tipo = tipo; 
+		this._tipo = tipo; 
 	}
 	
 	/// <summary>
@@ -141,7 +141,7 @@ public class Bloque : IBloque {
 	/// 	Chunk.
 	/// </returns>
 	public Chunk getChunk() { 
-		return chunk; 
+		return _chunk; 
 	} 
 	/// <summary>
 	/// 	Cambia el Chunk al que pertenece el Bloque.
@@ -150,6 +150,6 @@ public class Bloque : IBloque {
 	/// 	Chunk nuevo.
 	/// </param>
 	public void setChunk(Chunk chunk) { 
-		this.chunk = chunk; 
+		this._chunk = chunk; 
 	} 
 }

@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
-/// <summary>
-/// 	Representa un trozo de terreno que tiene un numero concreto de bloques en (x,y,z)
-/// </summary>
+// <summary>
+// 	Representa un trozo de terreno que tiene un numero concreto de bloques en (x,y,z)
+// </summary>
 public class Chunk {
 	
 	/// <summary>
@@ -21,9 +21,9 @@ public class Chunk {
 	/// </summary>
 	public const int numBloquesEnZ = 10;
 	
-	private int xTerreno = 0;
-	private int yTerreno = 0;
-	private int zTerreno = 0;
+	private int _xTerreno = 0;
+	private int _yTerreno = 0;
+	private int _zTerreno = 0;
 	
 	private Bloque[,,] _bloques;
 	private MallaChunk _malla;
@@ -45,9 +45,9 @@ public class Chunk {
 	/// </param>
 	public Chunk(int xTerreno, int yTerreno, int zTerreno)
 	{
-		this.xTerreno = xTerreno * numBloquesEnX;
-		this.yTerreno = yTerreno * numBloquesEnY;
-		this.zTerreno = zTerreno * numBloquesEnZ;
+		this._xTerreno = xTerreno * numBloquesEnX;
+		this._yTerreno = yTerreno * numBloquesEnY;
+		this._zTerreno = zTerreno * numBloquesEnZ;
 		_bloques = new Bloque[numBloquesEnX, numBloquesEnY, numBloquesEnZ];
 	}
 	
@@ -146,6 +146,7 @@ public class Chunk {
 	{
 		_bloques[xBloque, yBloque, zBloque] = bloque;
 	}
+	
 	/// <summary>
 	/// 	Metodo para avisar desde el Chunk al MallaChunk que se ha modificado 
 	/// 	y tiene que recalcularse la malla y el collider.
@@ -154,5 +155,10 @@ public class Chunk {
 	{
 		if(_malla != null)
 			_malla.seHaModificadoElChunk();
+	}
+
+	public override string ToString()
+	{
+		return string.Format("Chunk ({1},{2},{3})", this._xTerreno, this._yTerreno, this._zTerreno);
 	}
 }
