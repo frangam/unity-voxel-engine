@@ -33,6 +33,7 @@ public class TipoBloqueBase : IBloque {
 		bloque.setTipo(TipoBloque.VACIO);
 		return true;
 	}
+	
 	public virtual bool crearse(Bloque bloque, TipoBloque tipo)
 	{
 		if(!esDibujable()){
