@@ -9,7 +9,13 @@ public class MallaChunk : MonoBehaviour {
 	private bool _seHaModificadoElChunk = false;
 	
 	public MeshFilter Malla { get{ return _malla; } set{ _malla = value; }}
-	public MeshFilter collider { get{return _collider;} set{_collider = value;}}
+	
+	public MeshFilter getCollider(){
+		return _collider;
+	}
+	public void setCollider(MeshCollider collider){
+		_collider = collider;
+	}
 	public void setChunk(Chunk chunk)
 	{
 		this.chunk = chunk;

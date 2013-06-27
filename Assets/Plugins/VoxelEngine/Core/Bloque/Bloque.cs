@@ -45,7 +45,16 @@ public class Bloque : IBloque {
 	{
 		return TiposBloques.getBloque(tipo).crearse(this,tipoBloque);
 	}
-	
-	public TipoBloque Tipo { get { return tipo; } set { tipo = value; } }
-	public Chunk Chunk { get { return chunk; } set { chunk = value; } }
+	public TipoBloque getTipo() {
+		return tipo; 
+	} 
+	public void setTipo(TipoBloque tipo) { 
+		this.tipo = tipo; 
+	}
+	public Chunk getChunk() { 
+		return chunk; 
+	} 
+	public void setChunk(Chunk chunk) { 
+		this.chunk = chunk; 
+	} 
 }

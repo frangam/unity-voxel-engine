@@ -27,20 +27,20 @@ public class TipoBloqueBase : IBloque {
 	{
 		if(!esDibujable()){
 			return false;
-		}if(bloque.Chunk != null){
-			bloque.Chunk.seHaModificadoElChunk();
+		}if(bloque.getChunk() != null){
+			bloque.getChunk().seHaModificadoElChunk();
 		}
-		bloque.Tipo = TipoBloque.VACIO;
+		bloque.setTipo(TipoBloque.VACIO);
 		return true;
 	}
 	public virtual bool crearse(Bloque bloque, TipoBloque tipo)
 	{
 		if(!esDibujable()){
 			return false;
-		}if(bloque.Chunk != null){
-			bloque.Chunk.seHaModificadoElChunk();
+		}if(bloque.getChunk() != null){
+			bloque.getChunk().seHaModificadoElChunk();
 		}
-		bloque.Tipo = tipo; 
+		bloque.setTipo(tipo); 
 		return true;
 	}
 }
