@@ -24,5 +24,9 @@ public class ConfigTerreno : MonoBehaviour {
 	
 	
 	
+	public MaterialChunkRenderizable[] Materiales{
+		get {return materiales;}	
+	}
+	
 
 }
