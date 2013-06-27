@@ -124,7 +124,16 @@ public class Chunk {
 	/// </param>
 	public Bloque getBloque(int xBloque, int yBloque, int zBloque)
 	{
-		return _bloques[xBloque, yBloque, zBloque];
+		if (xBloque >= 0 && xBloque < numBloquesEnX && yBloque >= 0 && yBloque < numBloquesEnY && zBloque >= 0 && zBloque < numBloquesEnX)
+		{
+			if (_bloques[xBloque,yBloque,zBloque] != null)
+        		return _bloques[xBloque,yBloque,zBloque];
+		}
+		return null;
+//		else
+//		{
+//			return _worldRef[_xTerreno+xBloque, _yTerreno+yBloque, _zTerreno+zBloque];
+//		}
 	}
 	
 	/// <summary>
@@ -144,7 +153,10 @@ public class Chunk {
 	/// </param>
 	public void setBloque(Bloque bloque, int xBloque, int yBloque, int zBloque)
 	{
-		_bloques[xBloque, yBloque, zBloque] = bloque;
+		if (xBloque < numBloquesEnX && yBloque < numBloquesEnY && zBloque < numBloquesEnZ)
+		{
+        	_bloques[xBloque,yBloque,zBloque] = bloque;
+		}
 	}
 	
 	/// <summary>
