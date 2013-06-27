@@ -18,12 +18,11 @@ public class MaterialChunk {
 	[SerializeField]
 	private TipoBloque tipoDelBloque;
 	
-	
 	/// <summary>
-	/// El material
+	/// La posicion que ocupa el material asignado al tipo de bloque en el array
+	/// Materials de su MeshRenderer
 	/// </summary>
-	[SerializeField]
-	private Material material;
+	private int posicionEnMaterialsDelMeshRenderer;
 	
 	
 	#region metodos publicos
@@ -31,8 +30,8 @@ public class MaterialChunk {
 		get{return tipoDelBloque;}
 	}
 	
-	public Material Material{
-		get{return material;}
+	public int PosicionEnMaterialsDelMeshRenderer{
+		get{return posicionEnMaterialsDelMeshRenderer;}	
 	}
 	#endregion
 }
