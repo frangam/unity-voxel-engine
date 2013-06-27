@@ -16,10 +16,10 @@ public class Chunk {
 	
 	public Chunk(int xTerreno, int yTerreno, int zTerreno)
 	{
-		this.xTerreno = xTerreno;
-		this.yTerreno = yTerreno;
-		this.zTerreno = zTerreno;
-		_bloques = new Bloque(xTerreno, yTerreno, zTerreno);
+		this.xTerreno = xTerreno * numBloquesEnX;
+		this.yTerreno = yTerreno * numBloquesEnY;
+		this.zTerreno = zTerreno * numBloquesEnZ;
+		_bloques = new Bloque[numBloquesEnX, numBloquesEnY, numBloquesEnZ];
 	}
 	
 	public int getNumBloquesEnX(){ return numBloquesEnX; }
@@ -30,9 +30,9 @@ public class Chunk {
 	
 	public void actualizarMalla()
 	{
-		_malla.Malla.mesh.Clear();
+		_malla.getMalla().mesh.Clear();
 		//_malla.Malla.mesh = ChunkRender.Render(this);
-		_malla.collider.sharedMesh = _malla.Malla.mesh;
+		_malla.getCollider().sharedMesh = _malla.getMalla().mesh;
 	}
 	
 	public Bloque getBloque(int xBloque, int yBloque, int zBloque)
