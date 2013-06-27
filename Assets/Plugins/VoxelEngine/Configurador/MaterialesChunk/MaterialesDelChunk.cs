@@ -8,6 +8,9 @@ using System.Collections;
 * Abrir el prefab Chunk dentro de Plugins/VoxelEngine/Resources/Prefabs/Chunk/Chunk
 * A continuacion desplegamos el array de materiales de este script MaterialesChunk. 
 * Adjuntar en el array de materiales cada material que se desee y un nombre para cada tipo de bloque concreto: AGUA, TIERRA, PIEDRA, HIERBA...
+* 
+* 
+* >> Precondiciones: El tipo de bloque de MaterialChunk debe ser unico
 */
 public class MaterialesDelChunk : MonoBehaviour {
 	#region atributos publicos
@@ -22,20 +25,8 @@ public class MaterialesDelChunk : MonoBehaviour {
 	}
 	#endregion
 	
-	#region metodos privados
-	private void inicializarMateriales(){
-		MeshRenderer mrChunk = GetComponent<MeshRenderer>(); //obtenemos el componente MeshRenderer del prefab Chunk
-		
-		mrChunk.materials = new Material[materiales.Length]; //instanciamos el array de materiales del meshrenderer del chunk con el numero de materiales que se hayan adjuntado (lo limpiamos)
-		
-		//le adjuntamos al meshrenderer del chunk los materiales que se hayan indicado
-		for(int i=0; i<materiales.Length; i++){
-			mrChunk.materials[i] = materiales[0].Material;
-		}
-	}
-	#endregion
 	
-	#region metodos publicos estaticos
+		#region metodos publicos estaticos
 	/// <summary>
 	/// Este metodo sirve obtener el valor adecuado de una submalla de una Mesh cuando se utiliza el metodo Mesh.SetTriangles(int[] arrayTriangulosSubmalla, int indiceSubmalla).
 	/// Dicho indice sirve para indicar cual sera el material del MeshRenderer que se debe utilizar para renderizar esa submalla.
@@ -47,6 +38,7 @@ public class MaterialesDelChunk : MonoBehaviour {
 	/// >> de materiales el numero 3. La submalla 3 tendria asignado el material de la posicion del array 1, y la ultima cuarta submalla el elemento 0 del array.
 	/// 
 	/// 
+	/// -- Precondiciones: El tipo de bloque de MaterialChunk debe ser unico
 	/// </summary>
 	/// <returns>
 	/// The indice del material que ocua en el array de materiales de MeshRenderer
@@ -54,8 +46,57 @@ public class MaterialesDelChunk : MonoBehaviour {
 	/// <param name='tipoBloque'>
 	/// El tipo de bloque
 	/// </param>
-	public static int getIndiceMaterialSegunTipo(TipoBloque tipoBloque){
-		return 0;
+	/// <param name='mallaChunk'>
+	/// malla del chunk
+	/// </param>
+	public static int getIndiceMaterialSegunTipo(MallaChunk mallaChunk, TipoBloque tipoBloque){
+		int indice = 0;
+		int posicion = getPosicionMaterialEnArrayMateriales(tipoBloque); //obtenemos la posicion que ocupa el material de chunk con un tipo de bloque indicado
+		
+		return indice;
+	}
+	
+	#endregion
+	
+	
+	#region metodos privados
+	private void inicializarMateriales(){
+		MeshRenderer mrChunk = GetComponent<MeshRenderer>(); //obtenemos el componente MeshRenderer del prefab Chunk
+		
+		mrChunk.materials = new Material[materiales.Length]; //instanciamos el array de materiales del meshrenderer del chunk con el numero de materiales que se hayan adjuntado (lo limpiamos)
+		
+		//le adjuntamos al meshrenderer del chunk los materiales que se hayan indicado
+		for(int i=0; i<materiales.Length; i++){
+			mrChunk.materials[i] = materiales[0].Material;
+		}
+	}
+	
+	/// <summary>
+	/// Devuelve la posicion que ocupa un material de un tipo concreto en el array de materiales
+	/// 
+	/// >> Precondiciones: el tipo de bloque debe ser unico en dicho array de materiales de chunk
+	/// </summary>
+	/// <returns>
+	/// la posicion del material del tipo de bloque especifico en el array de materiales
+	/// </returns>
+	/// <param name='tipoBloque'>
+	/// El tipo de bloque al que le correspondo el material
+	/// </param>
+	private static int getPosicionMaterialEnArrayMateriales(TipoBloque tipoBloque){
+		int posicion = 0;
+		bool tipoBloqueEncontrado = false;
+		
+		for(int i=0; i<materiales.Length && !tipoBloqueEncontrado;i++){
+			tipoBloqueEncontrado = materiales[i].TipoDelBloque == tipoBloque;
+				
+			if(tipoBloqueEncontrado){
+				posicion = i; //guardamos la posicion que ocupa en el array materiales ese MaterialChunk con el tipo de bloque indicado
+			}
+		}
+		
+		return posicion;
 	}
 	#endregion
+	
+
 }
