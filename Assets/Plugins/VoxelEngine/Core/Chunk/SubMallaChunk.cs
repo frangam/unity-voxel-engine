@@ -21,10 +21,10 @@ public class SubMallaChunk {
 	{
 		return tipoBloqueARenderizar;
 	}
-	public int getIndiceSubMalla(MallaChunk mallaChunk)
-	{
-		return MaterialesDelChunk.getIndiceMaterialSegunTipo(mallaChunk, tipoBloqueARenderizar);
-	}
+//	public int getIndiceSubMalla(MallaChunk mallaChunk)
+//	{
+//		return MaterialesDelChunk.getIndiceMaterialSegunTipo(mallaChunk, tipoBloqueARenderizar);
+//	}
 }
 	/// Este metodo sirve obtener el valor adecuado de una submalla de una Mesh cuando se utiliza el metodo Mesh.SetTriangles(int[] arrayTriangulosSubmalla, int indiceSubmalla).
 	/// Dicho indice sirve para indicar cual sera el material del MeshRenderer que se debe utilizar para renderizar esa submalla.

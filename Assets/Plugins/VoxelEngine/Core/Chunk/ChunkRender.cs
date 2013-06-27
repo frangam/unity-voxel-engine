@@ -6,7 +6,7 @@ public class ChunkRender {
 	private static List<Vector3> verticiesMallaChunk;
 	private static List<int> triangulosMallaChunk;
 	private static List<Vector2> uvCoorTexturaMallaChunk;
-	private Dictionary<TipoBloque, SubMallaChunk> _subMallasChunk;
+	private static Dictionary<TipoBloque, SubMallaChunk> _subMallasChunk;
 	
 	
 	public static Mesh renderizar(Chunk chunk)
@@ -73,8 +73,8 @@ public class ChunkRender {
 				}
 			}
 		}
-//		List<TipoBloque> listaTipos = new List<TipoBloque>(_subMallasChunk.Keys);
-//		MaterialesDelChunk.inicializarMateriales(chunk.ToString(), listaTipos);
+		List<TipoBloque> listaTipos = new List<TipoBloque>(_subMallasChunk.Keys);
+		MaterialesDelChunk.inicializarMateriales(chunk.ToString(), listaTipos);
 			
 		Mesh mesh = new Mesh();
 		mesh.vertices = verticiesMallaChunk.ToArray();
@@ -86,10 +86,11 @@ public class ChunkRender {
 			mesh.SetTriangles(smc.Value.getTriangulos().ToArray(), i);
 			i++;
 		}
+		return mesh;
 		
 	}
 	
-	public void crearCaraMalla(Bloque bloque, Vector3 posicionBloque, string sitio)
+	private static void crearCaraMalla(Bloque bloque, Vector3 posicionBloque, string sitio)
 	{
 		int indeceVertices = verticiesMallaChunk.Count;
 		
