@@ -19,6 +19,7 @@ public class MaterialesDelChunk {
 	/// </param>
 	public static void inicializarMateriales(string nombreChunkGO, List<TipoBloque> tiposMateriales){
 		GameObject chunkGO = GameObject.Find(nombreChunkGO); //obtenemos el GameObject chunk segun su nombre
+		
 		Material[] materialesMeshRenderer = chunkGO.GetComponent<MeshRenderer>().materials; //obtenemos los materiales de su mesh renderer
 		MaterialChunk[] matAdjuntados = chunkGO.GetComponent<MaterialesAdjuntadosAlChunk>().materiales; //obtenemos su array de materiales de chunk
 		
@@ -30,6 +31,7 @@ public class MaterialesDelChunk {
 	
 		//le adjuntmos el material correspondiente a al array de materiales de la MeshRender del chunk GameObject, segun la lista de tipos de materiales
 		for(int i=0; i<tiposMateriales.Count; i++){
+//			matAdjuntados[i] = new MaterialChunk(); //TODO	
 			materialesMeshRenderer[i] = getMaterialAdjuntarAMesh(tiposMateriales[i]);	
 		}
 	}
@@ -77,7 +79,7 @@ public class MaterialesDelChunk {
 	/// </param>
 	private static Material getMaterialAdjuntarAMesh(TipoBloque tipoBloque){
 		Material mat = null;
-		MaterialChunkRenderizable[] materialesRenderizables = GameObject.Find("ConfigTerreno").GetComponent<ConfigTerreno>().Materiales; //obtenemos los materiales configurados por el usuario que se usaran en el renderizado del terreno
+		MaterialChunkRenderizable[] materialesRenderizables = GameObject.Find("GeneradorTerreno").GetComponent<GeneradorTerreno>().Materiales; //obtenemos los materiales configurados por el usuario que se usaran en el renderizado del terreno
 		
 		
 		foreach(MaterialChunkRenderizable m in materialesRenderizables){

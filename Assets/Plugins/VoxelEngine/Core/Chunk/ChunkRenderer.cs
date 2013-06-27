@@ -1,12 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class ChunkRender {
+public class ChunkRenderer {
 	
-	private static List<Vector3> verticiesMallaChunk;
-	private static List<int> triangulosMallaChunk;
-	private static List<Vector2> uvCoorTexturaMallaChunk;
-	private static Dictionary<TipoBloque, SubMallaChunk> _subMallasChunk;
+	private static List<Vector3> verticiesMallaChunk = new List<Vector3>();
+	private static List<int> triangulosMallaChunk = new List<int>();
+	private static List<Vector2> uvCoorTexturaMallaChunk = new List<Vector2>();
+	private static Dictionary<TipoBloque, SubMallaChunk> _subMallasChunk = new Dictionary<TipoBloque, SubMallaChunk>();
 	
 	
 	public static Mesh renderizar(Chunk chunk)

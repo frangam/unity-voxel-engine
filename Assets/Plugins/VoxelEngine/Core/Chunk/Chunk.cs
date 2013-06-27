@@ -171,6 +171,6 @@ public class Chunk {
 
 	public override string ToString()
 	{
-		return string.Format("Chunk ({1},{2},{3})", this._xTerreno, this._yTerreno, this._zTerreno);
+		return string.Format("Chunk ({0},{1},{2})", this._xTerreno, this._yTerreno, this._zTerreno);
 	}
 }
