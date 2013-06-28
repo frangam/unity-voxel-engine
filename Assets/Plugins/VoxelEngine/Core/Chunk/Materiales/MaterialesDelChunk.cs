@@ -34,6 +34,9 @@ public class MaterialesDelChunk {
 //			matAdjuntados[i] = new MaterialChunk(); //TODO	
 			materialesMeshRenderer[i] = getMaterialAdjuntarAMesh(tiposMateriales[i]);	
 		}
+		
+		//adjuntamos un array de materiales al Mesh Renderer
+		chunkGO.GetComponent<MeshRenderer>().materials = materialesMeshRenderer;
 	}
 	
 	/// <summary>

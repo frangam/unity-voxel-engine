@@ -79,6 +79,7 @@ public class ChunkRenderer {
 		Mesh mesh = new Mesh();
 		mesh.vertices = verticiesMallaChunk.ToArray();
 		mesh.uv = uvCoorTexturaMallaChunk.ToArray();
+		mesh.triangles = triangulosMallaChunk.ToArray();
 		mesh.subMeshCount = _subMallasChunk.Count+1; //es +1 porque su valor por defecto sin ninguna submalla es 1
 		int i = 1; //indice inicial de submaya
 		foreach(KeyValuePair<TipoBloque,SubMallaChunk> smc in _subMallasChunk)
@@ -143,9 +144,9 @@ public class ChunkRenderer {
 		uvCoorTexturaMallaChunk.Add(new Vector2(1, 0));
 		uvCoorTexturaMallaChunk.Add(new Vector2(0, 1));
 		uvCoorTexturaMallaChunk.Add(new Vector2(1, 1));
-			
-			
+				
 		List<int> tri = _subMallasChunk[bloque.getTipo()].getTriangulos();
+		//triangulos para submalla
 		tri.Add(indeceVertices);
 		tri.Add(indeceVertices+1);
 		tri.Add(indeceVertices+2);
@@ -153,6 +154,15 @@ public class ChunkRenderer {
 		tri.Add(indeceVertices+2);
 		tri.Add(indeceVertices+3);
 		tri.Add(indeceVertices);
+		
+		//los mismos para la malla ppal, puesto que es necesario que la malla principal tenga todos los triangulos
+		triangulosMallaChunk.Add(indeceVertices);
+		triangulosMallaChunk.Add(indeceVertices+1);
+		triangulosMallaChunk.Add(indeceVertices+2);
+		
+		triangulosMallaChunk.Add(indeceVertices+2);
+		triangulosMallaChunk.Add(indeceVertices+3);
+		triangulosMallaChunk.Add(indeceVertices);
 	}
 	
 }
