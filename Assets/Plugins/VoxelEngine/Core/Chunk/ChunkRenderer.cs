@@ -79,8 +79,8 @@ public class ChunkRenderer {
 		Mesh mesh = new Mesh();
 		mesh.vertices = verticiesMallaChunk.ToArray();
 		mesh.uv = uvCoorTexturaMallaChunk.ToArray();
-		mesh.subMeshCount = _subMallasChunk.Count;
-		int i = 1;
+		mesh.subMeshCount = _subMallasChunk.Count+1; //es +1 porque su valor por defecto sin ninguna submalla es 1
+		int i = 1; //indice inicial de submaya
 		foreach(KeyValuePair<TipoBloque,SubMallaChunk> smc in _subMallasChunk)
 		{
 			mesh.SetTriangles(smc.Value.getTriangulos().ToArray(), i);

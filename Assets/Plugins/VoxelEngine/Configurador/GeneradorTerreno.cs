@@ -40,14 +40,23 @@ public class GeneradorTerreno : MonoBehaviour {
 	#endregion
 	
 	#region metodos privados
-	private void generar(){	
-		terreno.inicializarTerreno();
+	private void generar(){		
+		terreno.inicializarChunks();//inicializar los chunks del terreno
 		
-		//creamos las mallas
-		for(int x=0; x<terreno.getNumChunksVisiblesEnX(); x++){
-			for(int y=0; y<terreno.getNumChunksVisiblesEnY(); y++){
-				for(int z=0; z<terreno.getNumChunksVisiblesEnZ(); z++){
-					terreno.inicializarChunks(x, y, z); //inicializamos los chunks
+		//generamos los datos del terreno
+		for(int x=0; x<terreno.getNumTotalBloquesEnX(); x++){
+			for(int y=0; y<terreno.getNumTotalBloquesEnY(); y++){
+				for(int z=0; z<terreno.getNumTotalBloquesEnZ(); z++){
+					//creamos los bloques en coordenadas de terreno
+					terreno.setBloque(new Bloque(TipoBloque.AGUA), x, y, z);
+				}
+			}
+		}
+		
+		//generamos la malla del terreno
+		for (int x = 0; x <  terreno.getNumChunksVisiblesEnX(); x++){
+			for (int y = 0; y <  terreno.getNumChunksVisiblesEnY(); y++){
+				for (int z = 0; z <  terreno.getNumChunksVisiblesEnZ(); z++){
 					crearMallaDelTerreno(x, y, z);
 				}
 			}
@@ -56,7 +65,7 @@ public class GeneradorTerreno : MonoBehaviour {
 	
 	private void crearMallaDelTerreno(int x, int y, int z){
 		MallaChunk mallaChunk = Instantiate(mallaChunkPrefab) as MallaChunk; //instanciamos nuestro prefab de MallaChunk
-		mallaChunk.name = "Chunk ("+x+","+y+","+z+")"; //le damos el nombre al GameObject
+		mallaChunk.name = terreno.getChunks()[x,y,z].ToString(); //le damos el nombre al GameObject
 		mallaChunk.transform.parent = terreno.transformTerreno; //asignamos el padre de la malla chunk la transform del terreno
 		mallaChunk.transform.position = new Vector3(x*Chunk.numBloquesEnX, y*Chunk.numBloquesEnY, z*Chunk.numBloquesEnZ);
 		terreno.crearMallaChunk(x, y, z, mallaChunk); //crear la malla del chunk 		

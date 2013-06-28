@@ -49,6 +49,14 @@ public class Chunk {
 		this._yTerreno = yTerreno * numBloquesEnY;
 		this._zTerreno = zTerreno * numBloquesEnZ;
 		_bloques = new Bloque[numBloquesEnX, numBloquesEnY, numBloquesEnZ];
+		
+		for(int x = 0; x < numBloquesEnX; x++){
+			for(int y = 0; y < numBloquesEnY; y++){
+				for(int z = 0; z < numBloquesEnZ; z++){
+					_bloques[x,y,z] = new Bloque(); //instanciamos los bloques con el constructor por defecto
+				}
+			}
+		}
 	}
 	
 	/// <summary>
@@ -124,16 +132,19 @@ public class Chunk {
 	/// </param>
 	public Bloque getBloque(int xBloque, int yBloque, int zBloque)
 	{
-		if (xBloque >= 0 && xBloque < numBloquesEnX && yBloque >= 0 && yBloque < numBloquesEnY && zBloque >= 0 && zBloque < numBloquesEnX)
+		Bloque b = new Bloque(TipoBloque.DESCONOCIDO);
+		
+		if (xBloque >= 0 && xBloque < numBloquesEnX && yBloque >= 0 && yBloque < numBloquesEnY && zBloque >= 0 && zBloque < numBloquesEnZ)
 		{
 			if (_bloques[xBloque,yBloque,zBloque] != null)
-        		return _bloques[xBloque,yBloque,zBloque];
+        		b = _bloques[xBloque,yBloque,zBloque];
 		}
-		return null;
-//		else
-//		{
-//			return _worldRef[_xTerreno+xBloque, _yTerreno+yBloque, _zTerreno+zBloque];
-//		}
+		else
+		{
+			b = Terreno.getBloque(_xTerreno+xBloque, _yTerreno+yBloque, _zTerreno+zBloque);
+		}
+		
+		return b;
 	}
 	
 	/// <summary>

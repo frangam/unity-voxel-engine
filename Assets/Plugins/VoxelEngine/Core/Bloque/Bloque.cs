@@ -28,7 +28,7 @@ public class Bloque : IBloque {
 	/// <param name='zTerreno'>
 	/// 	Coordenada en el eje X del bloque.
 	/// </param>
-	public Bloque(TipoBloque tipo, int xTerreno, int yTerreno, int zTerreno)
+	public Bloque(TipoBloque tipo = TipoBloque.DESCONOCIDO, int xTerreno = 0, int yTerreno = 0, int zTerreno = 0)
 	{
 		this._xTerreno = xTerreno;
 		this._yTerreno = yTerreno;
@@ -44,7 +44,7 @@ public class Bloque : IBloque {
 	/// </returns>
 	public bool esDibujable()
 	{
-		return false;
+		return TiposBloques.getBloque(_tipo).esDibujable();
 	}
 	
 	/// <summary>

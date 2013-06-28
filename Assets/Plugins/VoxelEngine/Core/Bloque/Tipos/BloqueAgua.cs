@@ -1,9 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class BloqueAgua : TipoBloqueBase {
+public class BloqueAgua : BloqueDibujable {
 
-	public override bool esDibujable(){
-		return true;
-	}
+
 }

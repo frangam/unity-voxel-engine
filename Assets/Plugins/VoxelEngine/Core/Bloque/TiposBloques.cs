@@ -12,6 +12,10 @@ public static class TiposBloques {
 	/// </summary>
 	public static TipoBloqueBase[] tipos = new TipoBloqueBase[] {
 		
+		
+		new BloqueDibujable(),
+		new BloqueDesconocido(),
+		new BloqueLimiteTerreno(),
 		new BloqueAgua(),
 		
 	};
