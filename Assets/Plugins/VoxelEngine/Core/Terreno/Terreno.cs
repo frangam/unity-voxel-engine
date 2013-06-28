@@ -90,8 +90,9 @@ public class Terreno {
 		Bloque bloque = new Bloque(TipoBloque.DESCONOCIDO);
 		
 		//comprobamos si las coordenadas del terreno no se salgan de rango
+		//por lo que hay que comprobar que las coordenadas no sean inferiores o mayores/iguales que el numero total de bloques por lado
 		bool coordTerrenoFueraRango = (xTerreno < 0 || yTerreno < 0 || zTerreno < 0) 
-									|| (xTerreno >= totalChunksX || yTerreno >= totalChunksY || zTerreno >= totalChunksZ);
+									|| (xTerreno >= totalBloquesX || yTerreno >= totalBloquesZ || zTerreno >= totalBloquesZ);
 		
 		//si las coordenadas del terreno se salen de rango devolvemos un bloque de limite de terreno
 		if(coordTerrenoFueraRango){ 
