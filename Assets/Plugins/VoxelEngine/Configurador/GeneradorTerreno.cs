@@ -49,7 +49,6 @@ public class GeneradorTerreno : MonoBehaviour {
 				for(int z=0; z<terreno.getNumChunksVisiblesEnZ(); z++){
 					terreno.inicializarChunks(x, y, z); //inicializamos los chunks
 					crearMallaDelTerreno(x, y, z);
-					ChunkRenderer.renderizar (terreno.getChunks()[x,y,z]);
 				}
 			}
 		}
