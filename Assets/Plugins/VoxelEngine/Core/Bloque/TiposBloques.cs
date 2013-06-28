@@ -9,13 +9,15 @@ public static class TiposBloques {
 	
 	/// <summary>
 	/// 	Array con los objectos de TipoBloque que habra en el juego.
+	/// 
+	/// 	En orden con el enum de TipoBloque
 	/// </summary>
 	public static TipoBloqueBase[] tipos = new TipoBloqueBase[] {
 		
 		
-		new BloqueDibujable(),
 		new BloqueDesconocido(),
 		new BloqueLimiteTerreno(),
+		new BloqueSuelo(),
 		new BloqueAgua(),
 		
 	};

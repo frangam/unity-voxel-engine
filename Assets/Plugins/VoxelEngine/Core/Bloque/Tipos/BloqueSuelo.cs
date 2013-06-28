@@ -1,6 +1,6 @@
 using System;
 
-public class BloqueDibujable : TipoBloqueBase
+public class BloqueSuelo : TipoBloqueBase
 {
 	public override bool esDibujable(){
 		return true;
