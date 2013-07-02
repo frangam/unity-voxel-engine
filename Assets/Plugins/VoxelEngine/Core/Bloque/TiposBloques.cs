@@ -19,6 +19,10 @@ public static class TiposBloques {
 		new BloqueLimiteTerreno(),
 		new BloqueSuelo(),
 		new BloqueAgua(),
+		new BloqueHierba(),
+		new BloquePiedra(),
+		new BloqueTierra(),
+		new BloqueVacio(),
 		
 	};
 	/// <summary>
