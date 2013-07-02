@@ -10,7 +10,7 @@ public class Chunk {
 	/// 	Numero de Bloques en el Eje X.
 	/// </summary>
 	public const int numBloquesEnX = 10;
-	
+
 	/// <summary>
 	/// 	Numero de Bloques en el Eje Y.
 	/// </summary>
