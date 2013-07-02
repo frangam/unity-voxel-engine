@@ -32,6 +32,9 @@ public class GeneradorTerreno : MonoBehaviour {
 	public MallaChunk mallaChunkPrefab;
 	#endregion
 	
+	public int numChunksEnX = 5;
+	public int numChunksEnY = 1;
+	public int numChunksEnZ = 5;
 	
 	#region metodos publicos
 	public MaterialChunkRenderizable[] Materiales{
@@ -67,7 +70,7 @@ public class GeneradorTerreno : MonoBehaviour {
 	private void generarTerrenoAleatorio()
 	{
 		SimplexNoise3D noise = new SimplexNoise3D();
-		terreno.inicializarChunks();
+		terreno = new Terreno(numChunksEnX, numChunksEnY, numChunksEnZ);
 		
 		for(int x=0; x<terreno.getNumTotalBloquesEnX(); x++){
 			for(int z=0; z<terreno.getNumTotalBloquesEnZ(); z++){

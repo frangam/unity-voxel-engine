@@ -9,9 +9,9 @@ public class Terreno {
 	/// </summary>
 	public Transform transformTerreno;
 	
-	[SerializeField] private int numChunksVisiblesEnX = 5;
-	[SerializeField] private int numChunksVisiblesEnY = 1;
-	[SerializeField] private int numChunksVisiblesEnZ = 5;
+	private int numChunksVisiblesEnX;
+ 	private int numChunksVisiblesEnY;
+ 	private int numChunksVisiblesEnZ;
 	
 	private int numTotalBloquesEnX;
 	private int numTotalBloquesEnY;
@@ -31,11 +31,11 @@ public class Terreno {
 	
 	private static Chunk[,,] chunks;
 	
-	public Terreno()
-	{
-		chunks = new Chunk[numChunksVisiblesEnX,numChunksVisiblesEnY,numChunksVisiblesEnZ];
-		inicializarChunks();
-	}
+//	public Terreno()
+//	{
+//		chunks = new Chunk[numChunksVisiblesEnX,numChunksVisiblesEnY,numChunksVisiblesEnZ];
+//		inicializarChunks();
+//	}
 	
 	public Terreno(int numChunkX, int numChunkY, int numChunkZ)
 	{
@@ -45,7 +45,6 @@ public class Terreno {
 		chunks = new Chunk[numChunkX, numChunkY, numChunkZ];
 		inicializarChunks();
 	}
-	
 	
 	#region getters
 	public int getNumChunksVisiblesEnX()
@@ -62,15 +61,23 @@ public class Terreno {
 	{
 		return numChunksVisiblesEnZ;
 	}
+	
 	public int getNumTotalBloquesEnX(){
 		return numTotalBloquesEnX;
 	}
 	public int getNumTotalBloquesEnY(){
 		return numTotalBloquesEnY;
 	}
+	
 	public int getNumTotalBloquesEnZ(){
 		return numTotalBloquesEnZ;
 	}
+	
+	public Chunk[,,] getChunks()
+	{
+		return chunks;
+	}
+	
 	/// <summary>
 	/// Obtiene un bloque en coordenadas del terreno
 	/// </summary>
@@ -160,13 +167,6 @@ public class Terreno {
 		
 	}
 	#endregion
-	
-	
-	
-	public Chunk[,,] getChunks()
-	{
-		return chunks;
-	}
 	
 	/// <summary>
 	/// Instancia todos los chunks del terreno	
