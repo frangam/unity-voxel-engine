@@ -5,24 +5,36 @@ public class Acciones : MonoBehaviour {
 	
 	private Bloque _bloqueSeleccionado;
 	private TipoBloque _tipoBloqueSeleccionado;
+	private Terreno terreno;
+	private Vector3 _bloqueSeleccionadoPos;
+	private Vector3 _colisionPoint;
 	
-	public void setTipoBloqueSeleccionado(TipoBloque tipo){
+	public void Init(Terreno terreno)
+	{
+		this.terreno = terreno;
+		_bloqueSeleccionado = new Bloque(TipoBloque.DESCONOCIDO);
+	}
+	
+	public void setTipoBloqueSeleccionado(TipoBloque tipo)
+	{
 		_tipoBloqueSeleccionado = tipo;	
 	}
 
-	public void CreateBlock(Vector2 posicionToque = new Vector2()){			
-//		Bloque bloqueSeleccionado = GetBloque(true, posicionToque);
-//
-//		if ( bloqueSeleccionado.esDibujable() == false && bloqueSeleccionado.getTipo() != TipoBloque.DESCONOCIDO)
-//		{
-////				_soundController.PlayCreateBlock();
-//			
-//			_bloqueSeleccionado = bloqueSeleccionado;
-//			_bloqueSeleccionado.Create(_tipoBloqueSeleccionado);
-//	
-//			//multitarea: se refresca la renderizacion de la malla del chunk
-//			StartCoroutine( _world.RefreshChunkMesh( new Vector3i(_selectedBlockPosition), false  ) );
-//		}		
+	public void CreateBlock(Vector2 posicionToque = new Vector2())
+	{	
+		
+		Bloque bloqueSeleccionado = GetBloque(true, posicionToque);
+
+		if ( bloqueSeleccionado.esDibujable() == false && bloqueSeleccionado.getTipo() != TipoBloque.DESCONOCIDO)
+		{
+//				_soundController.PlayCreateBlock();
+			
+			_bloqueSeleccionado = bloqueSeleccionado;
+			_bloqueSeleccionado.crearse(_tipoBloqueSeleccionado);
+	
+			//multitarea: se refresca la renderizacion de la malla del chunk
+			StartCoroutine( terreno.ActualizarChunk( new Vector3(_bloqueSeleccionadoPos.x, _bloqueSeleccionadoPos.y,0), false  ) );
+		}		
 	}
 	
 	public void DestroyBlock(Vector2 posicionToque = new Vector2()){		
@@ -77,73 +89,70 @@ public class Acciones : MonoBehaviour {
 	
 	Bloque GetBloque(bool getNearestNeighbor = false, Vector2 posicionToque = new Vector2())
 	{
-//		Ray ray = Camera.main.ScreenPointToRay( posicionToque ); //rayo desde la camara principal hasta la posicion de toque en pantalla
-//		
-////		Debug.DrawRay (ray.origin, ray.direction, Color.black, 100f); //solo para debug, para ver el rayo lanzado
-//		RaycastHit hit = new RaycastHit();
+		Ray ray = Camera.main.ScreenPointToRay( posicionToque ); //rayo desde la camara principal hasta la posicion de toque en pantalla
+		
+		RaycastHit hit = new RaycastHit();
 		
 		
-		Bloque block = new Bloque();
-//    	if (Physics.Raycast(ray, out hit, 100.0f) == true)
-//		{
-////			Debug.DrawLine (ray.origin, hit.point, Color.black,100f);//solo para debug, para ver el rayo lanzado
-//			
-//			_colisionPoint = hit.point;
-//            Vector3 hp = _colisionPoint + 0.0001f * ray.direction;
-//
-//            int x = Mathf.CeilToInt(hp.x) - 1;
-//            int y = Mathf.CeilToInt(hp.y) - 1;
-//            int z = Mathf.CeilToInt(hp.z) - 1;
-//
-//			_selectedBlockPosition = new Vector3(x,y,z);
-//			
-//			
-//			if (getNearestNeighbor == true)
-//			{
-//				#region GetNearestNeighbor
-//				Vector3 nearestBlock = _colisionPoint - _selectedBlockPosition;
-//
-//				if (nearestBlock.x == 1.0f)
-//				{
-//					x++;
-//				}
-//				else if (nearestBlock.x == 0.0f)
-//				{
-//					x--;
-//				}
-//	
-//				if (nearestBlock.y == 1.0f)
-//				{
-//					y++;
-//				}
-//				else if (nearestBlock.y == 0.0f)
-//				{
-//					y--;
-//				}
-//	
-//				if (nearestBlock.z == 1.0f)
-//				{
-//					z++;
-//				}
-//				else if (nearestBlock.z == 0.0f)
-//				{
-//					z--;
-//				}
-//								
-//				_selectedBlockPosition.x = x;
-//				_selectedBlockPosition.y = y;
-//				_selectedBlockPosition.z = z;
-//				
-//				block = _world[x, y, z];
-//				#endregion
-//			}
-//			else
-//			{
-//				block = _world[x, y, z];	
-//			}
-//		}		
+		Bloque bloque = new Bloque();
+    	if (Physics.Raycast(ray, out hit, 100.0f) == true)
+		{	
+			_colisionPoint = hit.point;
+            Vector3 hp = _colisionPoint + 0.0001f * ray.direction;
+
+            int x = Mathf.CeilToInt(hp.x) - 1;
+            int y = Mathf.CeilToInt(hp.y) - 1;
+            int z = Mathf.CeilToInt(hp.z) - 1;
+
+			_bloqueSeleccionadoPos = new Vector3(x,y,z);
+			
+			
+			if (getNearestNeighbor == true)
+			{
+				#region GetNearestNeighbor
+				Vector3 nearestBlock = _colisionPoint - _bloqueSeleccionadoPos;
+
+				if (nearestBlock.x == 1.0f)
+				{
+					x++;
+				}
+				else if (nearestBlock.x == 0.0f)
+				{
+					x--;
+				}
+	
+				if (nearestBlock.y == 1.0f)
+				{
+					y++;
+				}
+				else if (nearestBlock.y == 0.0f)
+				{
+					y--;
+				}
+	
+				if (nearestBlock.z == 1.0f)
+				{
+					z++;
+				}
+				else if (nearestBlock.z == 0.0f)
+				{
+					z--;
+				}
+								
+				_bloqueSeleccionadoPos.x = x;
+				_bloqueSeleccionadoPos.y = y;
+				_bloqueSeleccionadoPos.z = z;
+				
+				bloque = Terreno.getBloque(x,y,z);
+				#endregion
+			}
+			else
+			{
+				bloque = Terreno.getBloque(x,y,z);	
+			}
+		}		
 		
-		return block;
+		return bloque;
 	}
 	
 	void OnDrawGizmos() 

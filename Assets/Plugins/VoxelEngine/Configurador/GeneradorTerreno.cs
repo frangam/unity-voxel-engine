@@ -13,7 +13,8 @@ using System.Collections;
 *
 * >> Precondiciones: El tipo de bloque de MaterialChunk debe ser unico
 */
-public class GeneradorTerreno : MonoBehaviour {
+public class GeneradorTerreno : MonoBehaviour 
+{
 	
 	#region atributos publicos
 	/// <summary>
@@ -30,6 +31,8 @@ public class GeneradorTerreno : MonoBehaviour {
 	/// Un prefab con nuestra malla chunk
 	/// </summary>
 	public MallaChunk mallaChunkPrefab;
+	
+	public Acciones acciones;
 	#endregion
 	
 	public int numChunksEnX = 5;
@@ -71,6 +74,7 @@ public class GeneradorTerreno : MonoBehaviour {
 	{
 		SimplexNoise3D noise = new SimplexNoise3D();
 		terreno = new Terreno(numChunksEnX, numChunksEnY, numChunksEnZ);
+		acciones.Init(terreno);
 		
 		for(int x=0; x<terreno.getNumTotalBloquesEnX(); x++){
 			for(int z=0; z<terreno.getNumTotalBloquesEnZ(); z++){
@@ -119,7 +123,7 @@ public class GeneradorTerreno : MonoBehaviour {
 	
 	
 	#region Unity
-	public void Start(){	
+	public void Start(){
 		//generar(); //generamos el terreno en el inicio
 		var a = System.Diagnostics.Stopwatch.StartNew();
 		a.Start();
@@ -129,6 +133,4 @@ public class GeneradorTerreno : MonoBehaviour {
 	}
 	
 	#endregion
-	
-
 }

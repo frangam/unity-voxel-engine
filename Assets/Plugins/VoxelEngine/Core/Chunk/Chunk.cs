@@ -111,7 +111,7 @@ public class Chunk {
 	public void actualizarMalla()
 	{
 		_malla.getMalla().mesh.Clear();
-		//_malla.Malla.mesh = ChunkRender.Render(this);
+		_malla.getMalla().mesh = ChunkRenderer.renderizar(this);
 		_malla.getCollider().sharedMesh = _malla.getMalla().mesh;
 	}
 	

@@ -130,6 +130,7 @@ public class Terreno {
 		
 		return bloque;
 	}
+	
 	/// <summary>
 	/// Modifica un bloque en coordenadas del terreno, para ello debe obtener primero el bloque
 	/// en coordenadas del terreno tambien.
@@ -165,6 +166,73 @@ public class Terreno {
 			chunks[xChunk, yChunk, zChunk].setBloque(bloque, xBloque, yBloque, zBloque);
 		}
 		
+	}
+	
+	/// <summary>
+	/// Devuelve el Chunk de una coordenada del terreno.
+	/// </summary>
+	/// <returns>
+	/// El Chunk
+	/// </returns>
+	/// <param name='xTerreno'>
+	/// X terreno.
+	/// </param>
+	/// <param name='yTerreno'>
+	/// Y terreno.
+	/// </param>
+	/// <param name='zTerreno'>
+	/// Z terreno.
+	/// </param>
+	public Chunk getChunkPos(Vector3 terrenoPos)
+	{
+		return getBloque((int)terrenoPos.x, (int)terrenoPos.y, (int)terrenoPos.z).getChunk();
+	}
+	
+	public IEnumerator ActualizarChunk(Vector3 BloquePosRespectoTerreno, bool async = false)
+	{
+		Chunk ChunkDelBloque = getChunkPos(BloquePosRespectoTerreno);
+		Vector3 PosBloqueDentroChunk = TerrenoAChunkPos(BloquePosRespectoTerreno);
+		ActualizarChunkPorPosicion(TerrenoAChunkPos(BloquePosRespectoTerreno));
+		yield return null;
+		
+	}
+	
+	public void ActualizarChunkPorPosicion(Vector3 chunkPos)
+	{
+		int x = (int)chunkPos.x;
+		int y = (int)chunkPos.y;
+		int z = (int)chunkPos.z;
+		
+		if ( (x >= 0 && x < numChunksVisiblesEnX) && (y >= 0 && y < numChunksVisiblesEnY) && (z >= 0 && z < numChunksVisiblesEnZ) )
+		{
+			chunks[x,y,z].seHaModificadoElChunk();
+		}
+	}
+	
+	/// <summary>
+	/// Pasa coordenadas de terreno a coordenadas del chunk, para saber que posicion tiene dentro del chunk.
+	/// </summary>
+	/// <returns>
+	/// The A chunk position.
+	/// </returns>
+	/// <param name='xTerreno'>
+	/// X terreno.
+	/// </param>
+	/// <param name='yTerreno'>
+	/// Y terreno.
+	/// </param>
+	/// <param name='zTerreno'>
+	/// Z terreno.
+	/// </param>
+	public Vector3 TerrenoAChunkPos(Vector3 PosTerreno)
+	{
+		Vector3 res = Vector3.zero;
+		
+		res.x = PosTerreno.x % numChunksVisiblesEnX;
+		res.y = PosTerreno.y % numChunksVisiblesEnY;
+		res.z = PosTerreno.z % numChunksVisiblesEnZ;
+	
+		return res;
 	}
 	#endregion
 	
