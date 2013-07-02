@@ -63,6 +63,46 @@ public class GeneradorTerreno : MonoBehaviour {
 		}
 	}
 	
+	
+	private void generarTerrenoAleatorio()
+	{
+		SimplexNoise3D noise = new SimplexNoise3D();
+		terreno.inicializarChunks();
+		
+		for(int x=0; x<terreno.getNumTotalBloquesEnX(); x++){
+			for(int z=0; z<terreno.getNumTotalBloquesEnZ(); z++){
+				int height = Mathf.RoundToInt(noise.CoherentNoise(x,0,z) *35.0f +5.0f);
+				for(int y=0; y<terreno.getNumTotalBloquesEnY(); y++){
+					terreno.setBloque (seleccionarBloque(x,y,z, height),x,y,z);
+				}
+			}
+		}
+		//esto se puede meter en el inicializar de terreno.
+		for (int x = 0; x <  terreno.getNumChunksVisiblesEnX(); x++){
+			for (int y = 0; y <  terreno.getNumChunksVisiblesEnY(); y++){
+				for (int z = 0; z <  terreno.getNumChunksVisiblesEnZ(); z++){
+					crearMallaDelTerreno(x, y, z);
+				}
+			}
+		}
+	}
+	private Bloque seleccionarBloque(int x, int y, int z, int height)
+	{
+		int maxHeight = terreno.getNumTotalBloquesEnY();
+		Bloque bloque = new Bloque();
+		if(y == 0)
+				bloque = new Bloque(TipoBloque.SUELO, x,y,z);
+		else if (y >= 1  && y <= 2)
+				bloque = new Bloque(TipoBloque.TIERRA, x,y,z);
+		else if(y >= 3 && y < height)
+				bloque = new Bloque(TipoBloque.HIERBA, x,y,z);
+		else		
+				bloque = new Bloque(TipoBloque.AGUA, x,y,z);
+		
+		return bloque;
+	}
+	
+	//esto podria ir en el inicializar de terreno.
 	private void crearMallaDelTerreno(int x, int y, int z){
 		MallaChunk mallaChunk = Instantiate(mallaChunkPrefab) as MallaChunk; //instanciamos nuestro prefab de MallaChunk
 		mallaChunk.name = terreno.getChunks()[x,y,z].ToString(); //le damos el nombre al GameObject
@@ -76,13 +116,13 @@ public class GeneradorTerreno : MonoBehaviour {
 	
 	
 	#region Unity
-	public void Start(){
-		var timer = System.Diagnostics.Stopwatch.StartNew();
-		
-		generar(); //generamos el terreno en el inicio
-		
-		timer.Stop();
-		Debug.Log("tiempo de generacion del terreno: " + timer.ElapsedMilliseconds);
+	public void Start(){	
+		//generar(); //generamos el terreno en el inicio
+		var a = System.Diagnostics.Stopwatch.StartNew();
+		a.Start();
+		generarTerrenoAleatorio();
+		a.Stop();
+		Debug.Log (a.ElapsedMilliseconds);
 	}
 	
 	#endregion
