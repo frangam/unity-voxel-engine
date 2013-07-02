@@ -18,53 +18,18 @@ public class MaterialesDelChunk {
 	/// Los tipos de materiales se que le van a adjuntar
 	/// </param>
 	public static void inicializarMateriales(string nombreChunkGO, List<TipoBloque> tiposMateriales){
-		GameObject chunkGO = GameObject.Find(nombreChunkGO); //obtenemos el GameObject chunk segun su nombre
-		
-		Material[] materialesMeshRenderer = chunkGO.GetComponent<MeshRenderer>().materials; //obtenemos los materiales de su mesh renderer
-		MaterialChunk[] matAdjuntados = chunkGO.GetComponent<MaterialesAdjuntadosAlChunk>().materiales; //obtenemos su array de materiales de chunk
-		
-		//instanciamos dicho array con el numero de tipos de materiales que tiene que renderizar
-		matAdjuntados = new MaterialChunk[tiposMateriales.Count]; 
-		
-		//instanciamos el array de materiales del MeshRenderer del GameObject Chunk que tiene el nombre "nombreChunkGO"
+		//obtenemos el GameObject chunk segun su nombre
+		GameObject chunkGO = GameObject.Find(nombreChunkGO); 
+		//obtenemos los materiales de su mesh renderer
+		Material[] materialesMeshRenderer = chunkGO.GetComponent<MeshRenderer>().materials;
+		//inicializamos el array de materiales al numero de materiales que necesita.
 		materialesMeshRenderer = new Material[tiposMateriales.Count];
-	
-		//le adjuntmos el material correspondiente a al array de materiales de la MeshRender del chunk GameObject, segun la lista de tipos de materiales
+		//le adjuntmos el material correspondiente al array de materiales de la MeshRender del chunk GameObject, segun la lista de tipos de materiales
 		for(int i=0; i<tiposMateriales.Count; i++){
-//			matAdjuntados[i] = new MaterialChunk(); //TODO	
-			materialesMeshRenderer[i] = getMaterialAdjuntarAMesh(tiposMateriales[i]);	
+			materialesMeshRenderer[i] = getMaterialAdjuntarAMesh(tiposMateriales[i]);
 		}
-		
 		//adjuntamos un array de materiales al Mesh Renderer
 		chunkGO.GetComponent<MeshRenderer>().materials = materialesMeshRenderer;
-	}
-	
-	/// <summary>
-	/// Devuelve la posicion que ocupa un material de un tipo concreto en el array de materiales
-	/// 
-	/// >> Precondiciones: el tipo de bloque debe ser unico en dicho array de materiales de chunk
-	/// </summary>
-	/// <returns>
-	/// The posicion material en array materiales.
-	/// </returns>
-	/// <param name='tipoBloque'>
-	/// El tipo de bloque asociado al material
-	/// </param>
-	public static int getPosicionMaterialEnArrayMateriales(string nombreChunkGO, TipoBloque tipoBloque){
-		int posicion = 0;
-		GameObject chunkGO = GameObject.Find(nombreChunkGO); //obtenemos el GameObject chunk segun su nombre
-		MaterialChunk[] matAdjuntados = chunkGO.GetComponent<MaterialesAdjuntadosAlChunk>().materiales; //obtenemos su array de materiales de chunk
-		bool tipoBloqueEncontrado = false;
-		
-		for(int i=0; i<matAdjuntados.Length && !tipoBloqueEncontrado;i++){
-			tipoBloqueEncontrado = matAdjuntados[i].TipoDelBloque == tipoBloque;
-				
-			if(tipoBloqueEncontrado){
-				posicion = i; //guardamos la posicion que ocupa en el array materiales ese MaterialChunk con el tipo de bloque indicado
-			}
-		}
-		
-		return posicion;
 	}
 	
 	#endregion
@@ -82,8 +47,8 @@ public class MaterialesDelChunk {
 	/// </param>
 	private static Material getMaterialAdjuntarAMesh(TipoBloque tipoBloque){
 		Material mat = null;
-		MaterialChunkRenderizable[] materialesRenderizables = GameObject.Find("GeneradorTerreno").GetComponent<GeneradorTerreno>().Materiales; //obtenemos los materiales configurados por el usuario que se usaran en el renderizado del terreno
-		
+		//obtenemos los materiales configurados por el usuario que se usaran en el renderizado del terreno
+		MaterialChunkRenderizable[] materialesRenderizables = GameObject.Find("GeneradorTerreno").GetComponent<GeneradorTerreno>().Materiales; 
 		
 		foreach(MaterialChunkRenderizable m in materialesRenderizables){
 			if(m.TipoDelBloque == tipoBloque){
