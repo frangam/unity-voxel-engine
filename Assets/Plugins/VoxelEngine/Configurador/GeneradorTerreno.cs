@@ -104,7 +104,7 @@ public class GeneradorTerreno : MonoBehaviour
 		else if(y >= 3 && y < height)
 				bloque = new Bloque(TipoBloque.HIERBA, x,y,z);
 		else		
-				bloque = new Bloque(TipoBloque.AGUA, x,y,z);
+				bloque = new Bloque(TipoBloque.VACIO, x,y,z);
 		
 		return bloque;
 	}
@@ -115,6 +115,7 @@ public class GeneradorTerreno : MonoBehaviour
 		mallaChunk.name = terreno.getChunks()[x,y,z].ToString(); //le damos el nombre al GameObject
 		mallaChunk.transform.parent = terreno.transformTerreno; //asignamos el padre de la malla chunk la transform del terreno
 		mallaChunk.transform.position = new Vector3(x*Chunk.numBloquesEnX, y*Chunk.numBloquesEnY, z*Chunk.numBloquesEnZ);
+		mallaChunk.setChunk(terreno.getChunks()[x,y,z]); //asinamos el chunk a su malla
 		terreno.crearMallaChunk(x, y, z, mallaChunk); //crear la malla del chunk 		
 	}
 	

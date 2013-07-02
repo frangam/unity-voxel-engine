@@ -93,10 +93,11 @@ public class Acciones : MonoBehaviour {
 		
 		RaycastHit hit = new RaycastHit();
 		
-		
+		Debug.DrawRay (ray.origin, ray.direction, Color.black, 100f); //solo para debug, para ver el rayo lanzado
 		Bloque bloque = new Bloque();
-    	if (Physics.Raycast(ray, out hit, 100.0f) == true)
+    	if (Physics.Raycast(ray, out hit, 10000.0f) == true)
 		{	
+			Debug.DrawRay (ray.origin, ray.direction, Color.black, 100f); //solo para debug, para ver el rayo lanzado
 			_colisionPoint = hit.point;
             Vector3 hp = _colisionPoint + 0.0001f * ray.direction;
 

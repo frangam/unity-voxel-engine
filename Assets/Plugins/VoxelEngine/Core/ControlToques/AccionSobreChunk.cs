@@ -13,7 +13,7 @@ public class AccionSobreChunk : MonoBehaviour {
 	private Acciones acciones;
 	
 	void Start () {
-		acciones = GameObject.Find("Acciones").GetComponent<Acciones>();
+		acciones = GameObject.Find("GeneradorTerreno").GetComponent<GeneradorTerreno>().acciones;
 		GetComponent<TapGesture>().StateChanged += tapSobreTile; //le adjunto el nombre del metodo para el evento del gesto tap
 	}
 	
@@ -40,7 +40,7 @@ public class AccionSobreChunk : MonoBehaviour {
 		switch(e.State){
 			case  Gesture.GestureState.Began: //fin del gesto
 				posicionToque = gesto.PreviousScreenPosition;
-				Debug.Log("tocando chunk en posicion scren: "+posicionToque);
+				Debug.Log("tocando chunk en posicion screen: "+posicionToque);
 			
 				//segun el tipo de accion a realizar sobre el terreno
 				switch(UIPantalla.accionARealizarEnTerreno){
