@@ -99,7 +99,7 @@ public class Terreno {
 		//comprobamos si las coordenadas del terreno no se salgan de rango
 		//por lo que hay que comprobar que las coordenadas no sean inferiores o mayores/iguales que el numero total de bloques por lado
 		bool coordTerrenoFueraRango = (xTerreno < 0 || yTerreno < 0 || zTerreno < 0) 
-									|| (xTerreno >= totalBloquesX || yTerreno >= totalBloquesZ || zTerreno >= totalBloquesZ);
+									|| (xTerreno >= totalBloquesX || yTerreno >= totalBloquesY || zTerreno >= totalBloquesZ);
 		
 		//si las coordenadas del terreno se salen de rango devolvemos un bloque de limite de terreno
 		if(coordTerrenoFueraRango){ 
@@ -183,57 +183,63 @@ public class Terreno {
 	/// <param name='zTerreno'>
 	/// Z terreno.
 	/// </param>
-	public Chunk getChunkPos(Vector3 terrenoPos)
+	public Chunk getChunkPos(Bloque bloque)
 	{
-		return getBloque((int)terrenoPos.x, (int)terrenoPos.y, (int)terrenoPos.z).getChunk();
+		Chunk chunk = null;
+		int xChunk = bloque.getXTerreno() / Chunk.numBloquesEnX;
+		int yChunk = bloque.getYTerreno() / Chunk.numBloquesEnY;
+		int zChunk = bloque.getZTerreno() / Chunk.numBloquesEnZ;
+		
+	  	bool coordChunkFueraRango =  (xChunk < 0 || yChunk < 0 || zChunk < 0) || (xChunk >= totalChunksX
+									|| yChunk >= totalChunksY || zChunk >= totalChunksZ);
+		if(!coordChunkFueraRango){
+			chunk = chunks[xChunk, yChunk, zChunk];	
+		}
+		
+		return chunk;
 	}
 	
-	public IEnumerator ActualizarChunk(Vector3 BloquePosRespectoTerreno, bool async = false)
+	public IEnumerator ActualizarChunk(Bloque bloque, bool async = false)
 	{
-		Chunk ChunkDelBloque = getChunkPos(BloquePosRespectoTerreno);
-		Vector3 PosBloqueDentroChunk = TerrenoAChunkPos(BloquePosRespectoTerreno);
-		ActualizarChunkPorPosicion(TerrenoAChunkPos(BloquePosRespectoTerreno));
+		Chunk ChunkDelBloque = getChunkPos(bloque);
+//		Vector3 PosBloqueDentroChunk = posicionBloqueRespectoChunk(bloque);
+//		ActualizarChunkPorPosicion(TerrenoAChunkPos(BloquePosRespectoTerreno));
+		ChunkDelBloque.seHaModificadoElChunk();
 		yield return null;
 		
 	}
 	
-	public void ActualizarChunkPorPosicion(Vector3 chunkPos)
-	{
-		int x = (int)chunkPos.x;
-		int y = (int)chunkPos.y;
-		int z = (int)chunkPos.z;
-		
-		if ( (x >= 0 && x < numChunksVisiblesEnX) && (y >= 0 && y < numChunksVisiblesEnY) && (z >= 0 && z < numChunksVisiblesEnZ) )
-		{
-			chunks[x,y,z].seHaModificadoElChunk();
-		}
-	}
+//	public void ActualizarChunkPorPosicion(Vector3 chunkPos)
+//	{
+//		int x = (int)chunkPos.x;
+//		int y = (int)chunkPos.y;
+//		int z = (int)chunkPos.z;
+//		
+//		if ( (x >= 0 && x < numChunksVisiblesEnX) && (y >= 0 && y < numChunksVisiblesEnY) && (z >= 0 && z < numChunksVisiblesEnZ) )
+//		{
+//			chunks[x,y,z].seHaModificadoElChunk();
+//		}
+//	}
 	
-	/// <summary>
-	/// Pasa coordenadas de terreno a coordenadas del chunk, para saber que posicion tiene dentro del chunk.
-	/// </summary>
-	/// <returns>
-	/// The A chunk position.
-	/// </returns>
-	/// <param name='xTerreno'>
-	/// X terreno.
-	/// </param>
-	/// <param name='yTerreno'>
-	/// Y terreno.
-	/// </param>
-	/// <param name='zTerreno'>
-	/// Z terreno.
-	/// </param>
-	public Vector3 TerrenoAChunkPos(Vector3 PosTerreno)
-	{
-		Vector3 res = Vector3.zero;
-		
-		res.x = PosTerreno.x % numChunksVisiblesEnX;
-		res.y = PosTerreno.y % numChunksVisiblesEnY;
-		res.z = PosTerreno.z % numChunksVisiblesEnZ;
-	
-		return res;
-	}
+//	/// <summary>
+//	/// Obtiene la posicion del bloque respecto al chunk, segun las coordenadas del terreno que tiene el bloque
+//	/// </summary>
+//	/// <returns>
+//	/// Devuelve la posicion del bloque respecto a coordenadas del chunk
+//	/// </returns>
+//	/// <param name='bloque'>
+//	/// El bloque
+//	/// </param>
+//	public Vector3 posicionBloqueRespectoChunk(Bloque bloque)
+//	{
+//		Vector3 res = Vector3.zero;
+//		
+//		res.x = bloque.getXTerreno() % numChunksVisiblesEnX;
+//		res.y = bloque.getYTerreno() % numChunksVisiblesEnY;
+//		res.z = bloque.getZTerreno() % numChunksVisiblesEnZ;
+//	
+//		return res;
+//	}
 	#endregion
 	
 	/// <summary>

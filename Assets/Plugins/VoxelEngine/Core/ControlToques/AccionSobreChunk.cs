@@ -48,6 +48,7 @@ public class AccionSobreChunk : MonoBehaviour {
 						acciones.DestroyBlock(posicionToque); //destruimos el bloque
 					break;
 					case TipoAccionTerreno.CONSTRUIR:
+						
 						acciones.CreateBlock(posicionToque); //construimos el bloque
 					break;
 				}

@@ -72,9 +72,10 @@ public class TipoBloqueBase : IBloque {
 	{
 		if(!esDibujable()){
 			return false;
-		}if(bloque.getChunk() != null){
-			bloque.getChunk().seHaModificadoElChunk();
 		}
+//		if(bloque.getChunk() != null){
+//			bloque.getChunk().seHaModificadoElChunk();
+//		}
 		bloque.setTipo(TipoBloque.VACIO);
 		return true;
 	}
@@ -90,11 +91,12 @@ public class TipoBloqueBase : IBloque {
 	/// </returns>
 	public virtual bool crearse(Bloque bloque, TipoBloque tipo)
 	{
-		if(!esDibujable()){
+		if(bloque.getTipo() != TipoBloque.VACIO){ 
 			return false;
-		}if(bloque.getChunk() != null){
-			bloque.getChunk().seHaModificadoElChunk();
 		}
+//		if(bloque.getChunk() != null){
+//			bloque.getChunk().seHaModificadoElChunk();
+//		}
 		bloque.setTipo(tipo); 
 		return true;
 	}

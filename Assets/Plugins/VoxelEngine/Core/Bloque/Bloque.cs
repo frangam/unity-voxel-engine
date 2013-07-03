@@ -11,7 +11,7 @@ public class Bloque : IBloque {
 	private int _yTerreno = 0;
 	private int _zTerreno = 0;
 	private TipoBloque _tipo;
-	private Chunk _chunk;
+//	private Chunk _chunk;
 	
 	/// <summary>
 	/// 	Inicializamos una nueva instacia de la clase <see cref="Bloque"/>.
@@ -115,6 +115,20 @@ public class Bloque : IBloque {
 		return TiposBloques.getBloque(_tipo).crearse(this,tipoBloque);
 	}
 	
+	#region getters/setters
+	
+	public int getXTerreno(){
+		return _xTerreno;	
+	}
+	
+	public int getYTerreno(){
+		return _yTerreno;	
+	}
+	
+	public int getZTerreno(){
+		return _zTerreno;	
+	}
+	
 	/// <summary>
 	/// 	Devuelve el TipoBloque del Bloque.
 	/// </summary>
@@ -134,22 +148,25 @@ public class Bloque : IBloque {
 		this._tipo = tipo; 
 	}
 	
-	/// <summary>
-	/// 	Devuelve el Chunk.
-	/// </summary>
-	/// <returns>
-	/// 	Chunk.
-	/// </returns>
-	public Chunk getChunk() { 
-		return _chunk; 
-	} 
-	/// <summary>
-	/// 	Cambia el Chunk al que pertenece el Bloque.
-	/// </summary>
-	/// <param name='chunk'>
-	/// 	Chunk nuevo.
-	/// </param>
-	public void setChunk(Chunk chunk) { 
-		this._chunk = chunk; 
-	} 
+	#endregion
+	
+//	
+//	/// <summary>
+//	/// 	Devuelve el Chunk.
+//	/// </summary>
+//	/// <returns>
+//	/// 	Chunk.
+//	/// </returns>
+//	public Chunk getChunk() { 
+//		return _chunk; 
+//	} 
+//	/// <summary>
+//	/// 	Cambia el Chunk al que pertenece el Bloque.
+//	/// </summary>
+//	/// <param name='chunk'>
+//	/// 	Chunk nuevo.
+//	/// </param>
+//	public void setChunk(Chunk chunk) { 
+//		this._chunk = chunk; 
+//	} 
 }

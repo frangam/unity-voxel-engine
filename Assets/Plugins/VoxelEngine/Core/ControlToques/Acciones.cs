@@ -3,17 +3,17 @@ using System.Collections;
 
 public class Acciones : MonoBehaviour {
 	
-	private Bloque _bloqueSeleccionado;
+	private Bloque _bloqueSeleccionado = new Bloque(TipoBloque.DESCONOCIDO);
 	private TipoBloque _tipoBloqueSeleccionado;
-	private Terreno terreno;
+//	private Terreno terreno;
 	private Vector3 _bloqueSeleccionadoPos;
 	private Vector3 _colisionPoint;
 	
-	public void Init(Terreno terreno)
-	{
-		this.terreno = terreno;
-		_bloqueSeleccionado = new Bloque(TipoBloque.DESCONOCIDO);
-	}
+//	public void Init(Terreno terreno)
+//	{
+////		this.terreno = terreno;
+//		_bloqueSeleccionado 
+//	}
 	
 	public void setTipoBloqueSeleccionado(TipoBloque tipo)
 	{
@@ -24,8 +24,9 @@ public class Acciones : MonoBehaviour {
 	{	
 		
 		Bloque bloqueSeleccionado = GetBloque(true, posicionToque);
-
-		if ( bloqueSeleccionado.esDibujable() == false && bloqueSeleccionado.getTipo() != TipoBloque.DESCONOCIDO)
+		
+		//construir bloque si es de tipo vacio (hueco)
+		if ( bloqueSeleccionado.getTipo() == TipoBloque.VACIO)
 		{
 //				_soundController.PlayCreateBlock();
 			
@@ -33,7 +34,7 @@ public class Acciones : MonoBehaviour {
 			_bloqueSeleccionado.crearse(_tipoBloqueSeleccionado);
 	
 			//multitarea: se refresca la renderizacion de la malla del chunk
-			StartCoroutine( terreno.ActualizarChunk( new Vector3(_bloqueSeleccionadoPos.x, _bloqueSeleccionadoPos.y,0), false  ) );
+			StartCoroutine(GameObject.Find("GeneradorTerreno").GetComponent<GeneradorTerreno>().terreno.ActualizarChunk(bloqueSeleccionado, false  ) );
 		}		
 	}
 	
@@ -84,6 +85,9 @@ public class Acciones : MonoBehaviour {
 //			
 //			_selectedBlock.Destroy();
 //			StartCoroutine( _world.RefreshChunkMesh( new Vector3i(_selectedBlockPosition), false  ) );
+			
+			//multitarea: se refresca la renderizacion de la malla del chunk
+//			StartCoroutine(GameObject.Find("GeneradorTerreno").GetComponent<GeneradorTerreno>().terreno.ActualizarChunk( new Vector3(_bloqueSeleccionadoPos.x, _bloqueSeleccionadoPos.y,0), false  ) );
 //		}			
 	}
 	
@@ -95,7 +99,7 @@ public class Acciones : MonoBehaviour {
 		
 		Debug.DrawRay (ray.origin, ray.direction, Color.black, 100f); //solo para debug, para ver el rayo lanzado
 		Bloque bloque = new Bloque();
-    	if (Physics.Raycast(ray, out hit, 10000.0f) == true)
+    	if (Physics.Raycast(ray, out hit, 1000.0f) == true)
 		{	
 			Debug.DrawRay (ray.origin, ray.direction, Color.black, 100f); //solo para debug, para ver el rayo lanzado
 			_colisionPoint = hit.point;

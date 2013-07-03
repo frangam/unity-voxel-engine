@@ -74,7 +74,7 @@ public class GeneradorTerreno : MonoBehaviour
 	{
 		SimplexNoise3D noise = new SimplexNoise3D();
 		terreno = new Terreno(numChunksEnX, numChunksEnY, numChunksEnZ);
-		acciones.Init(terreno);
+//		acciones.Init();
 		
 		for(int x=0; x<terreno.getNumTotalBloquesEnX(); x++){
 			for(int z=0; z<terreno.getNumTotalBloquesEnZ(); z++){
