@@ -46,28 +46,28 @@ public class GeneradorTerreno : MonoBehaviour
 	#endregion
 	
 	#region metodos privados
-	private void generar(){		
-		terreno.inicializarChunks();//inicializar los chunks del terreno
-		
-		//generamos los datos del terreno
-		for(int x=0; x<terreno.getNumTotalBloquesEnX(); x++){
-			for(int y=0; y<terreno.getNumTotalBloquesEnY(); y++){
-				for(int z=0; z<terreno.getNumTotalBloquesEnZ(); z++){
-					//creamos los bloques en coordenadas de terreno
-					terreno.setBloque(new Bloque(TipoBloque.AGUA), x, y, z);
-				}
-			}
-		}
-		
-		//generamos la malla del terreno
-		for (int x = 0; x <  terreno.getNumChunksVisiblesEnX(); x++){
-			for (int y = 0; y <  terreno.getNumChunksVisiblesEnY(); y++){
-				for (int z = 0; z <  terreno.getNumChunksVisiblesEnZ(); z++){
-					crearMallaDelTerreno(x, y, z);
-				}
-			}
-		}
-	}
+//	private void generar(){		
+//		terreno.inicializarChunks();//inicializar los chunks del terreno
+//		
+//		//generamos los datos del terreno
+//		for(int x=0; x<terreno.getNumTotalBloquesEnX(); x++){
+//			for(int y=0; y<terreno.getNumTotalBloquesEnY(); y++){
+//				for(int z=0; z<terreno.getNumTotalBloquesEnZ(); z++){
+//					//creamos los bloques en coordenadas de terreno
+////					terreno.setBloque(new Bloque(TipoBloque.AGUA), x, y, z);
+//				}
+//			}
+//		}
+//		
+//		//generamos la malla del terreno
+//		for (int x = 0; x <  terreno.getNumChunksVisiblesEnX(); x++){
+//			for (int y = 0; y <  terreno.getNumChunksVisiblesEnY(); y++){
+//				for (int z = 0; z <  terreno.getNumChunksVisiblesEnZ(); z++){
+//					crearMallaDelTerreno(x, y, z);
+//				}
+//			}
+//		}
+//	}
 	
 	/// <summary>
 	/// Genera el terreno de forma aleatoria, aplicando un algoritmo de ruido 3D
