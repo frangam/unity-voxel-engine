@@ -3,15 +3,10 @@ using System.Collections;
 
 [System.Serializable]
 public class Vector3i : System.Object{
-	#region atributos privados
-	[SerializeField]
-	private int x;
-	
-	[SerializeField]
-	private int y;
-	
-	[SerializeField]
-	private int z;
+	#region atributos
+	public int x;
+	public int y;
+	public int z;
 	#endregion
 	
 	#region constructores
@@ -41,8 +36,13 @@ public class Vector3i : System.Object{
 	/// <returns>
 	/// <c>true</c> si el especificado <see cref="Vector3i"/> es igual al <see cref="Vector3i"/>; en otro caso, <c>false</c>.
 	/// </returns>
-	public override bool Equals (Vector3i v){
-		return (this.x.Equals(v.x) && this.y.Equals(v.y) && this.z.Equals(v.z));
+	public override bool Equals (object v){
+		bool res = false;
+		Vector3i vector = (Vector3i) v;
+		
+		res = (this.x.Equals(vector.x) && this.y.Equals(vector.y) && this.z.Equals(vector.z));
+		
+		return res;
 	}
 	#endregion
 }

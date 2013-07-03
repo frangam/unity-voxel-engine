@@ -115,26 +115,26 @@ public class TipoBloqueBase : IBloque {
 	/// <param name='TipoBloque'>
 	/// If set to <c>true</c> tipo bloque.
 	/// </param>
-	private virtual bool existeAlgunBloqueVecinoDelTipoEspecificado(Bloque bloque, TipoBloque TipoBloque){
+	public virtual bool existeAlgunBloqueVecinoDelTipoEspecificado(Bloque bloque, TipoBloque TipoBloque){
 		bool existe = false; //flag
 		
 		
-		
-		// Comprobamos si hay agua en el eje Z
-		for (int i = _k - 1; i <= _k + 1 && !existe; i++) {
-			//controlamos los bordes
-			if (i > -1 && i < Configuracion.NUM_TILES_HORIZONTAL + 1) {				
-				//la concicicion para que exista un vecino que verifica el tipo de tile pasado como parametro 
-				existe = MapGenerator.worldData[_i, _j, i].GetComponent<Tile>().type == tipo;
-			}
-		}
-		// Comprobamos si hay agua en el eje X
-		for (int j = _i - 1; j <= _i + 1 && !existe; j++) {
-			if (j > -1 && j < Configuracion.NUM_TILES_VERTICAL + 1){
-				//la concicicion para que exista un vecino que verifica el tipo de tile pasado como parametro
-				existe = MapGenerator.worldData[j, _j, _k].GetComponent<Tile>().type == tipo;
-			}	
-		}
+//		
+//		// Comprobamos si hay agua en el eje Z
+//		for (int i = _k - 1; i <= _k + 1 && !existe; i++) {
+//			//controlamos los bordes
+//			if (i > -1 && i < Configuracion.NUM_TILES_HORIZONTAL + 1) {				
+//				//la concicicion para que exista un vecino que verifica el tipo de tile pasado como parametro 
+//				existe = MapGenerator.worldData[_i, _j, i].GetComponent<Tile>().type == tipo;
+//			}
+//		}
+//		// Comprobamos si hay agua en el eje X
+//		for (int j = _i - 1; j <= _i + 1 && !existe; j++) {
+//			if (j > -1 && j < Configuracion.NUM_TILES_VERTICAL + 1){
+//				//la concicicion para que exista un vecino que verifica el tipo de tile pasado como parametro
+//				existe = MapGenerator.worldData[j, _j, _k].GetComponent<Tile>().type == tipo;
+//			}	
+//		}
 		
 		return existe;
 	}
