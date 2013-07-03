@@ -30,7 +30,7 @@ public class Terreno {
 	#endregion
 	
 	
-	private static Chunk[,,] chunks;
+	public static Chunk[,,] chunks;
 	
 //	public Terreno()
 //	{
