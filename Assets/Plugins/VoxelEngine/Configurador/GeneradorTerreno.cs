@@ -125,12 +125,16 @@ public class GeneradorTerreno : MonoBehaviour
 	
 	#region Unity
 	public void Start(){
-		//generar(); //generamos el terreno en el inicio
-		var a = System.Diagnostics.Stopwatch.StartNew();
-		a.Start();
-		generarTerrenoAleatorio();
-		a.Stop();
-		Debug.Log (a.ElapsedMilliseconds);
+		//timer para medir el tiempo que se tarda en generar el terreno
+		var timer = System.Diagnostics.Stopwatch.StartNew();
+		timer.Start(); //inicializar timer
+		
+		//generacion del terreno aleatorio
+		generarTerrenoAleatorio(); 
+		
+		//detenemos timer y mostramos el tiempo que ha tardado en generarse el terreno
+		timer.Stop();
+		Debug.Log ("tiempo generacion terreno: " + timer.ElapsedMilliseconds);
 	}
 	
 	#endregion

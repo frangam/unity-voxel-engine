@@ -165,7 +165,7 @@ public class Terreno {
 	        int zBloque = zTerreno % Chunk.numBloquesEnZ;
 			
 			chunks[xChunk, yChunk, zChunk].setBloque(bloque, xBloque, yBloque, zBloque);
-			Debug.Log ("Bloque seleccionado: "+xBloque+","+yBloque+","+zBloque);
+//			Debug.Log ("Bloque seleccionado: "+xBloque+","+yBloque+","+zBloque);
 		}
 		
 	}
