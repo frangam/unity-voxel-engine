@@ -4,7 +4,7 @@ using System.Collections;
 // <summary>
 // 	Representa un trozo de terreno que tiene un numero concreto de bloques en (x,y,z)
 // </summary>
-public class Chunk {
+public class Chunk{
 	
 	/// <summary>
 	/// 	Numero de Bloques en el Eje X.
@@ -183,5 +183,9 @@ public class Chunk {
 	public override string ToString()
 	{
 		return string.Format("Chunk ({0},{1},{2})", this._xTerreno, this._yTerreno, this._zTerreno);
+	}
+	public bool Equals(Chunk chunk)
+	{
+		return (this._xTerreno == chunk._xTerreno && this._yTerreno == chunk._yTerreno && this._zTerreno == chunk._zTerreno); 
 	}
 }

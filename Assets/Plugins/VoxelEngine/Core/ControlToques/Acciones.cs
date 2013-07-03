@@ -45,6 +45,8 @@ public class Acciones : MonoBehaviour {
 		{
 			_bloqueSeleccionado = bloqueSeleccionado;
 			_bloqueSeleccionado.destruirse();
+			
+			Debug.Log ("Bloque seleccionado: "+ _bloqueSeleccionado.getXTerreno()+","+_bloqueSeleccionado.getYTerreno()+","+_bloqueSeleccionado.getZTerreno());
 	
 //			_soundController.PlayDestroyBlock();
 			

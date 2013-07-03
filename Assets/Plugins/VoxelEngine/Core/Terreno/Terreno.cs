@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class Terreno {
@@ -164,6 +165,7 @@ public class Terreno {
 	        int zBloque = zTerreno % Chunk.numBloquesEnZ;
 			
 			chunks[xChunk, yChunk, zChunk].setBloque(bloque, xBloque, yBloque, zBloque);
+			Debug.Log ("Bloque seleccionado: "+xBloque+","+yBloque+","+zBloque);
 		}
 		
 	}
@@ -201,12 +203,49 @@ public class Terreno {
 	
 	public IEnumerator ActualizarChunk(Bloque bloque, bool async = false)
 	{
+		
+		
 		Chunk ChunkDelBloque = getChunkPos(bloque);
-//		Vector3 PosBloqueDentroChunk = posicionBloqueRespectoChunk(bloque);
-//		ActualizarChunkPorPosicion(TerrenoAChunkPos(BloquePosRespectoTerreno));
 		ChunkDelBloque.seHaModificadoElChunk();
+		refrescarChunkVecinos(ChunkDelBloque, bloque);
+		
 		yield return null;
 		
+	}
+
+	public void refrescarChunkVecinos (Chunk chunk, Bloque bloque)
+	{	
+		List<Bloque> vecinos = new List<Bloque>();
+
+		int xBloque = bloque.getXTerreno() % Chunk.numBloquesEnX;
+       	int yBloque = bloque.getYTerreno() % Chunk.numBloquesEnY;
+        int zBloque = bloque.getZTerreno() % Chunk.numBloquesEnZ;
+		
+		Bloque izquierda = chunk.getBloque(xBloque + 1, yBloque, zBloque);
+		Bloque arriba = chunk.getBloque(xBloque, yBloque + 1, zBloque);
+		Bloque abajo = chunk.getBloque(xBloque, yBloque - 1, zBloque);
+		Bloque frente = chunk.getBloque(xBloque, yBloque, zBloque +1);
+		Bloque atras = chunk.getBloque(xBloque, yBloque, zBloque - 1);
+		Bloque derecha = chunk.getBloque(xBloque - 1, yBloque, zBloque);
+		
+		vecinos.Add(izquierda);
+		vecinos.Add(arriba);
+		vecinos.Add(abajo);
+		vecinos.Add(frente);
+		vecinos.Add(atras);
+		vecinos.Add(derecha);
+		
+		foreach(Bloque b in vecinos)
+		{
+			if(b.esDibujable())
+			{
+				Chunk c = null;
+				c = getChunkPos(b);
+				if ( !chunk.Equals(c))
+					c.seHaModificadoElChunk();
+			}
+		}
+
 	}
 	
 //	public void ActualizarChunkPorPosicion(Vector3 chunkPos)
