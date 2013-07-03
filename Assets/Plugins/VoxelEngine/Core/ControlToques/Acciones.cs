@@ -39,14 +39,15 @@ public class Acciones : MonoBehaviour {
 	}
 	
 	public void DestroyBlock(Vector2 posicionToque = new Vector2()){		
-//		Bloque bloqueSeleccionado = GetBloque(false, posicionToque);
-//		
-//		if ( bloqueSeleccionado.esDibujable() && bloqueSeleccionado.getTipo() != TipoBloque.SUELO)
-//		{
-//			_selectedBlock = bloqueSeleccionado;
-////			
-////			_soundController.PlayDestroyBlock();
-//			
+		Bloque bloqueSeleccionado = GetBloque(false, posicionToque);
+		
+		if ( bloqueSeleccionado.esDibujable())
+		{
+			_bloqueSeleccionado = bloqueSeleccionado;
+			_bloqueSeleccionado.destruirse();
+	
+//			_soundController.PlayDestroyBlock();
+			
 //			#region DestroyFx
 //			ParticleSystem destroyParticle = null;
 //			
@@ -87,8 +88,8 @@ public class Acciones : MonoBehaviour {
 //			StartCoroutine( _world.RefreshChunkMesh( new Vector3i(_selectedBlockPosition), false  ) );
 			
 			//multitarea: se refresca la renderizacion de la malla del chunk
-//			StartCoroutine(GameObject.Find("GeneradorTerreno").GetComponent<GeneradorTerreno>().terreno.ActualizarChunk( new Vector3(_bloqueSeleccionadoPos.x, _bloqueSeleccionadoPos.y,0), false  ) );
-//		}			
+			StartCoroutine(GameObject.Find("GeneradorTerreno").GetComponent<GeneradorTerreno>().terreno.ActualizarChunk(bloqueSeleccionado, false  ) );
+		}			
 	}
 	
 	Bloque GetBloque(bool getNearestNeighbor = false, Vector2 posicionToque = new Vector2())

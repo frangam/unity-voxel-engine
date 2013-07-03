@@ -70,7 +70,7 @@ public class TipoBloqueBase : IBloque {
 	/// </returns>
 	public virtual bool destruirse(Bloque bloque)
 	{
-		if(!esDibujable()){
+		if(bloque.getTipo() == TipoBloque.SUELO){
 			return false;
 		}
 //		if(bloque.getChunk() != null){
