@@ -55,7 +55,9 @@ public static class Bloques{
 	        //si las coordenadas del chunk no se salen de rango
 			if(!coordChunkFueraRango){
 				//ahora si obtenemos el chunk segun las coordenas de chunk respecto del terreno
-		        Chunk chunk = GameObject.Find("GeneradorTerreno").GetComponent<GeneradorTerreno>().terreno.getChunks()[xChunk,yChunk,zChunk];
+				Chunk chunk = Terreno.chunks[xChunk, yChunk, zChunk];
+				
+//		        Chunk chunk = GameObject.Find("GeneradorTerreno").GetComponent<GeneradorTerreno>().terreno.getChunks()[xChunk,yChunk,zChunk];
 		
 				//calcula las coordenadas de bloque relativas al origen del chunk
 		        int xBloque = posicionEnCoordsTerreno.x % Chunk.numBloquesEnX;
@@ -117,7 +119,10 @@ public static class Bloques{
 	        int zBloque = posicionEnCoordsTerreno.z % Chunk.numBloquesEnZ;
 			
 			//obtenemos el chunk del terreno
-			Chunk chunk = GameObject.Find("GeneradorTerreno").GetComponent<GeneradorTerreno>().terreno.getChunks()[xChunk, yChunk, zChunk];
+			Chunk chunk = Terreno.chunks[xChunk, yChunk, zChunk];
+			
+//			Se tarda mas en generar el terreno si el chunk se obtiene asi:
+//			Chunk chunk = GameObject.Find("GeneradorTerreno").GetComponent<GeneradorTerreno>().terreno.getChunks()[xChunk, yChunk, zChunk];
 			
 			//modificamos el bloque con el nuevo bloque
 			chunk.setBloque(bloque, xBloque, yBloque, zBloque);
