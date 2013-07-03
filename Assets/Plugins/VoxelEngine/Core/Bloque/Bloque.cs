@@ -7,9 +7,9 @@ using System.Collections;
  
 public class Bloque : IBloque {
 
-	private int _xTerreno = 0;
-	private int _yTerreno = 0;
-	private int _zTerreno = 0;
+	private int xTerreno = 0;
+	private int yTerreno = 0;
+	private int zTerreno = 0;
 	private TipoBloque _tipo;
 //	private Chunk _chunk;
 	
@@ -30,24 +30,24 @@ public class Bloque : IBloque {
 	/// </param>
 	public Bloque(TipoBloque tipo = TipoBloque.DESCONOCIDO, int xTerreno = 0, int yTerreno = 0, int zTerreno = 0)
 	{
-		this._xTerreno = xTerreno;
-		this._yTerreno = yTerreno;
-		this._zTerreno = zTerreno;
+		this.xTerreno = xTerreno;
+		this.yTerreno = yTerreno;
+		this.zTerreno = zTerreno;
 		this._tipo = tipo;
 	}
 	
 	#region getters/setters
 	
 	public int getXTerreno(){
-		return _xTerreno;	
+		return xTerreno;	
 	}
 	
 	public int getYTerreno(){
-		return _yTerreno;	
+		return yTerreno;	
 	}
 	
 	public int getZTerreno(){
-		return _zTerreno;	
+		return zTerreno;	
 	}
 	
 	/// <summary>
