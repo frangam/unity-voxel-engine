@@ -69,6 +69,28 @@ public class Bloque : IBloque {
 		this._tipo = tipo; 
 	}
 	
+	/// <summary>
+	/// Obtiene las coordenadas del terreno donde se localiza el bloque
+	/// </summary>
+	/// <returns>
+	/// Las coordenadas del terreno donde se localiza el bloque
+	/// </returns>
+	public Vector3i getCoordsTerreno(){
+		return new Vector3i(getXTerreno (), getYTerreno (), getZTerreno ());
+	}
+	
+	/// <summary>
+	/// Modifica las coordenadas del terreno donde se localiza el bloque
+	/// </summary>
+	/// <param name='coords'>
+	/// Las coordenas nuevas
+	/// </param>
+	public void setCoordsTeereno(Vector3i coords){
+		this.xTerreno = coords.x;
+		this.yTerreno = coords.y;
+		this.zTerreno = coords.z;
+	}
+	
 	#endregion
 	
 	#region implementacion de la interfaz IBloque
