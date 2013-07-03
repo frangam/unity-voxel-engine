@@ -11,7 +11,7 @@ public class Bloque : IBloque {
 	private int yTerreno = 0;
 	private int zTerreno = 0;
 	private TipoBloque _tipo;
-//	private Chunk _chunk;
+
 	
 	/// <summary>
 	/// 	Inicializamos una nueva instacia de la clase <see cref="Bloque"/>.
