@@ -8,21 +8,49 @@ public class UIPantalla : MonoBehaviour {
 	/// </summary>
 	private Acciones acciones; 
 	
+	public Boton botonDestruir;
+	
+	public Boton botonCrearHierba;
+	
 	/// <summary>
 	/// a accion que se realiza: cavar el terreno, colocar, no hacer nada.
 	/// </summary>
-	public static TipoAccionTerreno accionARealizarEnTerreno = TipoAccionTerreno.CAVAR; //TODO: cambiar //TipoAccionTerreno.NO_ACCION;
-
+	public static TipoAccionTerreno accionARealizarEnTerreno = TipoAccionTerreno.NO_ACCION;
+	
+	#region Unity
 	// Use this for initialization
 	void Start () {
-		acciones = GameObject.Find("Acciones").GetComponent<Acciones>();
+		botonDestruir.EventPressed += destruirBloque;
+		botonCrearHierba.EventPressed += crearBloqueHierba;
 		
-		//TODO: cambiar aacion a un boton
-		acciones.setTipoBloqueSeleccionado(TipoBloque.VACIO);
+		acciones = GameObject.Find("Acciones").GetComponent<Acciones>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
+	#endregion
+	
+	#region control de evento click en botones
+	void destruirBloque(){
+		if(accionARealizarEnTerreno == TipoAccionTerreno.CAVAR){
+			accionARealizarEnTerreno = TipoAccionTerreno.NO_ACCION;
+		}
+		else{
+			accionARealizarEnTerreno = TipoAccionTerreno.CAVAR;
+			acciones.setTipoBloqueSeleccionado(TipoBloque.VACIO);
+		}
+	}
+	
+	void crearBloqueHierba(){
+		if(accionARealizarEnTerreno == TipoAccionTerreno.CONSTRUIR){
+			accionARealizarEnTerreno = TipoAccionTerreno.NO_ACCION;
+		}
+		else{
+			accionARealizarEnTerreno = TipoAccionTerreno.CONSTRUIR;
+			acciones.setTipoBloqueSeleccionado(TipoBloque.HIERBA);
+		}
+	}
+	#endregion
 }
