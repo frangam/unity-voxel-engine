@@ -83,8 +83,8 @@ public class GeneradorTerreno : MonoBehaviour
 				int altura = Mathf.RoundToInt(noise.CoherentNoise(x,0,z) *35.0f +5.0f);
 				
 				for(int y=0; y<terreno.getNumTotalBloquesEnY(); y++){
-//					Bloques.setBloqueEnCoordsTerreno(seleccionarBloque(x,y,z, altura),x,y,z);
-					terreno.setBloque (seleccionarBloque(x,y,z, altura),x,y,z); 
+					Bloques.setBloqueEnCoordsTerreno(seleccionarBloque(x,y,z, altura),x,y,z);
+//					terreno.setBloque (seleccionarBloque(x,y,z, altura),x,y,z); 
 				}
 			}
 		}
