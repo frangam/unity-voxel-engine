@@ -36,6 +36,42 @@ public class Bloque : IBloque {
 		this._tipo = tipo;
 	}
 	
+	#region getters/setters
+	
+	public int getXTerreno(){
+		return _xTerreno;	
+	}
+	
+	public int getYTerreno(){
+		return _yTerreno;	
+	}
+	
+	public int getZTerreno(){
+		return _zTerreno;	
+	}
+	
+	/// <summary>
+	/// 	Devuelve el TipoBloque del Bloque.
+	/// </summary>
+	/// <returns>
+	///  	TipoBloque.
+	/// </returns>
+	public TipoBloque getTipo() {
+		return _tipo; 
+	} 
+	/// <summary>
+	/// 	Cambia el TipoBloque del Bloque.
+	/// </summary>
+	/// <param name='tipo'>
+	/// 	TipoBloque nuevo.
+	/// </param>
+	public void setTipo(TipoBloque tipo) { 
+		this._tipo = tipo; 
+	}
+	
+	#endregion
+	
+	#region implementacion de la interfaz IBloque
 	/// <summary>
 	/// 	Variable para saber si un bloque sera visible o no.
 	/// </summary>
@@ -90,6 +126,11 @@ public class Bloque : IBloque {
 	{
 		return TiposBloques.getBloque(_tipo).posicionUVTexturaCara();
 	}
+	
+	#endregion
+	
+	#region metodos publicos
+	
 	/// <summary>
 	/// 	Destruimos el bloque actual.
 	/// </summary>
@@ -114,40 +155,6 @@ public class Bloque : IBloque {
 	{
 		return TiposBloques.getBloque(_tipo).crearse(this,tipoBloque);
 	}
-	
-	#region getters/setters
-	
-	public int getXTerreno(){
-		return _xTerreno;	
-	}
-	
-	public int getYTerreno(){
-		return _yTerreno;	
-	}
-	
-	public int getZTerreno(){
-		return _zTerreno;	
-	}
-	
-	/// <summary>
-	/// 	Devuelve el TipoBloque del Bloque.
-	/// </summary>
-	/// <returns>
-	///  	TipoBloque.
-	/// </returns>
-	public TipoBloque getTipo() {
-		return _tipo; 
-	} 
-	/// <summary>
-	/// 	Cambia el TipoBloque del Bloque.
-	/// </summary>
-	/// <param name='tipo'>
-	/// 	TipoBloque nuevo.
-	/// </param>
-	public void setTipo(TipoBloque tipo) { 
-		this._tipo = tipo; 
-	}
-	
 	#endregion
 	
 //	

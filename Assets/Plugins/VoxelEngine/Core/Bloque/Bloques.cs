@@ -1,12 +1,14 @@
-using System;
+using UnityEngine;
+using System.Collections;
 
-namespace AssemblyCSharpfirstpass
-{
-	public class Bloques
-	{
-		public Bloques ()
-		{
-		}
+public static class Bloques{
+	public static Bloque getBloqueEnCoordsTerreno(){
+		
+	}
+	
+	public static Bloque getBloqueEnCoordsChunk(int xTerreno, ){
+		
 	}
 }
+
 
