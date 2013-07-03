@@ -69,18 +69,22 @@ public class GeneradorTerreno : MonoBehaviour
 		}
 	}
 	
-	
+	/// <summary>
+	/// Genera el terreno de forma aleatoria, aplicando un algoritmo de ruido 3D
+	/// </summary>
 	private void generarTerrenoAleatorio()
 	{
-		SimplexNoise3D noise = new SimplexNoise3D();
+		SimplexNoise3D noise = new SimplexNoise3D(); //el algoritmo de ruido para generar montanias
 		terreno = new Terreno(numChunksEnX, numChunksEnY, numChunksEnZ);
-//		acciones.Init();
-		
+
+		//vamos adjuntandole al terreno los bloques		
 		for(int x=0; x<terreno.getNumTotalBloquesEnX(); x++){
 			for(int z=0; z<terreno.getNumTotalBloquesEnZ(); z++){
-				int height = Mathf.RoundToInt(noise.CoherentNoise(x,0,z) *35.0f +5.0f);
+				int altura = Mathf.RoundToInt(noise.CoherentNoise(x,0,z) *35.0f +5.0f);
+				
 				for(int y=0; y<terreno.getNumTotalBloquesEnY(); y++){
-					terreno.setBloque (seleccionarBloque(x,y,z, height),x,y,z);
+//					Bloques.setBloqueEnCoordsTerreno(seleccionarBloque(x,y,z, altura),x,y,z);
+					terreno.setBloque (seleccionarBloque(x,y,z, altura),x,y,z); 
 				}
 			}
 		}
@@ -93,7 +97,26 @@ public class GeneradorTerreno : MonoBehaviour
 			}
 		}
 	}
-	private Bloque seleccionarBloque(int x, int y, int z, int height)
+	
+	/// <summary>
+	/// Se selecciona el bloque que se desea crear segun la y y la altura
+	/// </summary>
+	/// <returns>
+	/// El bloque seleccionado
+	/// </returns>
+	/// <param name='x'>
+	/// X.
+	/// </param>
+	/// <param name='y'>
+	/// Y.
+	/// </param>
+	/// <param name='z'>
+	/// Z.
+	/// </param>
+	/// <param name='altura'>
+	/// Altura
+	/// </param>
+	private Bloque seleccionarBloque(int x, int y, int z, int altura)
 	{
 		int maxHeight = terreno.getNumTotalBloquesEnY();
 		Bloque bloque = new Bloque();
@@ -101,7 +124,7 @@ public class GeneradorTerreno : MonoBehaviour
 				bloque = new Bloque(TipoBloque.SUELO, x,y,z);
 		else if (y >= 1  && y <= 2)
 				bloque = new Bloque(TipoBloque.TIERRA, x,y,z);
-		else if(y >= 3 && y < height)
+		else if(y >= 3 && y < altura)
 				bloque = new Bloque(TipoBloque.HIERBA, x,y,z);
 		else		
 				bloque = new Bloque(TipoBloque.VACIO, x,y,z);
