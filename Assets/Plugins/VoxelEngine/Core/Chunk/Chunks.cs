@@ -3,10 +3,23 @@ using System.Collections;
 
 public static class Chunks{
 	/// <summary>
-	/// Obtiene un chunk en coordenadas del terreno
+	/// Obtiene el chunk que contiene al bloque indicado
 	/// </summary>
 	/// <returns>
-	/// The chunk en coords terreno.
+	/// El chunk
+	/// </returns>
+	/// <param name='bloque'>
+	/// El bloque que pertenece al chunk que se quiere obtener
+	/// </param>
+	public static Chunk getChunkQueContieneAlBloque(Bloque bloque){
+		return getChunkEnCoordsTerreno(new Vector3i(bloque.getXTerreno(), bloque.getYTerreno(), bloque.getZTerreno()));
+	}
+	
+	/// <summary>
+	/// Obtiene el chunk localizado en las coordenadas del terreno
+	/// </summary>
+	/// <returns>
+	/// El chunk
 	/// </returns>
 	/// <param name='xTerreno'>
 	/// X terreno.
@@ -25,7 +38,7 @@ public static class Chunks{
 	/// Obtiene el chunk localizado en coordenadas del terreno especificadas
 	/// </summary>
 	/// <returns>
-	/// The chunk en coords terreno.
+	/// The chunk
 	/// </returns>
 	/// <param name='posicionEnCoordsTerreno'>
 	/// Las coordenadas del terreno
