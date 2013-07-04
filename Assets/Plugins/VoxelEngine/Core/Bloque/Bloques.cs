@@ -189,12 +189,13 @@ public static class Bloques{
 					case EjeCoordenada.EJE_Z: coordsTerrenoVecino = new Vector3i(bloque.getXTerreno(), bloque.getYTerreno(), coordVecinoEnElEje); break;
 				}
 				
-				//caso especial: tipo del vecino sea agua >> tambien comprobamos que el bloque devuelto es de tipo limite
-				if(tipoBloqueVecino == TipoBloque.AGUA){
-				 	existe = Bloques.getBloqueEnCoordsTerreno(coordsTerrenoVecino).getTipo() == tipoBloqueVecino
-							|| Bloques.getBloqueEnCoordsTerreno(coordsTerrenoVecino).getTipo() == TipoBloque.LIMITE_TERRENO;
+				//caso especial: tipo del vecino sea agua y que la coordenada y del bloque no esta por encima del nivel del mar 
+				if(tipoBloqueVecino == TipoBloque.AGUA && bloque.getYTerreno() < Terreno.nivelDelAgua){
+					TipoBloque tipoVecinoRecorrido = Bloques.getBloqueEnCoordsTerreno(coordsTerrenoVecino).getTipo();
+				 	existe = tipoVecinoRecorrido == TipoBloque.AGUA
+							|| tipoVecinoRecorrido == TipoBloque.LIMITE_TERRENO; //>> tambien comprobamos que el bloque devuelto es de tipo limite (consideramos que hay agua al rededor del terreno)
 				}
-				else{
+				else{ //caso general
 					//la concicicion para que exista un vecino que verifica el tipo de tile pasado como parametro
 					existe = Bloques.getBloqueEnCoordsTerreno(coordsTerrenoVecino).getTipo() == tipoBloqueVecino;
 				}

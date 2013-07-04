@@ -35,9 +35,12 @@ public class GeneradorTerreno : MonoBehaviour
 	public Acciones acciones;
 	#endregion
 	
+	#region atributos de configuracion del terreno
 	public int numChunksEnX = 5;
 	public int numChunksEnY = 1;
 	public int numChunksEnZ = 5;
+	public int nivelDelAgua = 3;
+	#endregion
 	
 	#region metodos publicos
 	public MaterialChunkRenderizable[] Materiales{
@@ -75,7 +78,19 @@ public class GeneradorTerreno : MonoBehaviour
 	private void generarTerrenoAleatorio()
 	{
 		SimplexNoise3D noise = new SimplexNoise3D(); //el algoritmo de ruido para generar montanias
-		terreno = new Terreno(numChunksEnX, numChunksEnY, numChunksEnZ);
+		terreno = new Terreno(numChunksEnX, numChunksEnY, numChunksEnZ, nivelDelAgua);
+		
+		if(nivelDelAgua > Terreno.totalBloquesY || nivelDelAgua < 0){
+			Debug.Log("Nivel del Agua fuera de los limites");
+		}
+		else{
+			Transform aguaAlrededor = GameObject.Find("AguaAlrededor").transform; //obtenemos los hijos de AguaAlrededor
+			
+			//por cada parte del agua, le cambiamos la altura a su posicion segun el nivel del agua indicado
+			foreach(Transform t in aguaAlrededor){
+				t.position = new Vector3(t.position.x, nivelDelAgua, t.position.z);
+			}
+		}
 
 		//vamos adjuntandole al terreno los bloques		
 		for(int x=0; x<terreno.getNumTotalBloquesEnX(); x++){
