@@ -29,8 +29,16 @@ public class Terreno {
 	public static int totalBloquesZ;
 	#endregion
 	
-	
+	/// <summary>
+	/// Las porciones del terreno
+	/// </summary>
 	public static Chunk[,,] chunks;
+	
+	/// <summary>
+	/// camino que se va rellenando con agua (true: contiene agua, false: no la contiene)
+	/// </summary>
+	public static bool[,,] caminoAgua;
+
 	
 //	public Terreno()
 //	{
@@ -45,6 +53,7 @@ public class Terreno {
 		numChunksVisiblesEnZ = numChunkZ;
 		chunks = new Chunk[numChunkX, numChunkY, numChunkZ];
 		inicializarChunks();
+		caminoAgua = new bool[totalBloquesX, totalBloquesY, totalBloquesZ]; //inicializo camino de agua; 
 	}
 	
 	#region getters

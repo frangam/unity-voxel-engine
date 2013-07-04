@@ -46,7 +46,12 @@ public class Acciones : MonoBehaviour {
 			_bloqueSeleccionado = bloqueSeleccionado;
 			_bloqueSeleccionado.destruirse();
 			
-			Debug.Log ("Bloque seleccionado: "+ _bloqueSeleccionado.getXTerreno()+","+_bloqueSeleccionado.getYTerreno()+","+_bloqueSeleccionado.getZTerreno());
+			//si existe algun vecino al bloque a destruir que tenga agua, propagamos el agua
+			if(Bloques.existeAlgunBloqueVecinoConElTipo(bloqueSeleccionado, TipoBloque.AGUA)){
+				Bloques.dejarPasarElAgua(bloqueSeleccionado); //dejamos que pase el agua por este bloque vacio y por todos sus vecino y vecinos de este
+			}
+			
+//			Debug.Log ("Bloque seleccionado: "+ _bloqueSeleccionado.getXTerreno()+","+_bloqueSeleccionado.getYTerreno()+","+_bloqueSeleccionado.getZTerreno());
 	
 //			_soundController.PlayDestroyBlock();
 			
