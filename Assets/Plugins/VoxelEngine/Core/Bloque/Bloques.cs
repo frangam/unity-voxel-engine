@@ -240,7 +240,7 @@ public static class Bloques{
 		int limiteDcha = Terreno.totalBloquesX + 1; //limite derecho del terreno
 		int limiteInf = 0; //limite superior del terreno
 		int limiteSup = Terreno.totalBloquesZ + 1; //limite superior del terreno
-		int limitePisoSup = Terreno.totalBloquesY; //numero de pisos del terreno
+		int limitePisoSup = Terreno.nivelDelAgua; //limite en altura del agua
 		int i = bloque.getXTerreno(); //coordenada x del terreno donde se localiza el bloque que comprobamos
 		int j = bloque.getYTerreno(); //coordenada y del terreno donde se localiza el bloque que comprobamos
 		int k = bloque.getZTerreno(); //coordenada z del terreno donde se localiza el bloque que comprobamos
