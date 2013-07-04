@@ -13,13 +13,15 @@ public class GestosCamara : MonoBehaviour {
 		
 		pan.gestureRecognizedEvent += ( r ) =>
 		{
-			float panX = pan.deltaTranslation.x * 0.1f;
-			float panZ = pan.deltaTranslation.y * 0.1f;
+			float panX = pan.deltaTranslation.x;
+			float panY = pan.deltaTranslation.y;
 			Vector3 camPos = Camera.mainCamera.transform.position;
 			float newCamPosX = Mathf.Clamp(camPos.x + panX, -75, -30);
-			float newCamPosZ = Mathf.Clamp(camPos.z + panZ, -75, -30);
-			
-			Camera.mainCamera.transform.position = new Vector3(newCamPosX, camPos.y, newCamPosZ);
+			float newCamPosY = Mathf.Clamp(camPos.y + panY, -75, -30);
+			if((newCamPosX != -75 || newCamPosX != -35) && ( newCamPosY != -75 || newCamPosY != -35 ))
+				Camera.mainCamera.transform.position -= new Vector3(panX, panY) / 25;
+				
+			//Camera.mainCamera.transform.position = new Vector3(newCamPosX, camPos.y, newCamPosZ);
 			Debug.Log( "pan recognizer fired: " + r );
 		};
 		
