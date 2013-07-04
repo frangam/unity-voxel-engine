@@ -135,14 +135,20 @@ public class GeneradorTerreno : MonoBehaviour
 	private Bloque seleccionarBloque(int x, int y, int z, int altura)
 	{
 		Bloque bloque = new Bloque();
+		TipoBloque tipoElegido = TipoBloque.SUELO;
+		
 		if(y == 0)
-				bloque = new Bloque(TipoBloque.SUELO, x,y,z);
-		else if (y == 1)
-				bloque = new Bloque(TipoBloque.TIERRA, x,y,z);
-		else if(y >= 2 && y < altura)
-				bloque = new Bloque(TipoBloque.HIERBA, x,y,z);
+			tipoElegido = TipoBloque.SUELO;
+		else if( y == 1)
+			tipoElegido = TipoBloque.PROXIMO_A_SUELO;
+		else if (y==2)
+			tipoElegido = TipoBloque.TIERRA;
+		else if(y >= 3 && y < altura)
+			tipoElegido = TipoBloque.HIERBA;
 		else		
-				bloque = new Bloque(TipoBloque.VACIO, x,y,z);
+			tipoElegido = TipoBloque.VACIO;
+		
+		bloque = new Bloque(tipoElegido, x,y,z);
 		
 		return bloque;
 	}
