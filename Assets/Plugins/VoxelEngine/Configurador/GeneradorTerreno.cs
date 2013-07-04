@@ -95,7 +95,7 @@ public class GeneradorTerreno : MonoBehaviour
 		//vamos adjuntandole al terreno los bloques		
 		for(int x=0; x<terreno.getNumTotalBloquesEnX(); x++){
 			for(int z=0; z<terreno.getNumTotalBloquesEnZ(); z++){
-				int altura = Mathf.RoundToInt(noise.CoherentNoise(x,0,z) *35.0f +5.0f);
+				int altura = Mathf.RoundToInt(noise.CoherentNoise(x,0,z)*10.0f+ 2f);
 				
 				for(int y=0; y<terreno.getNumTotalBloquesEnY(); y++){
 					Terreno.caminoAgua[x, y, z] = false; //inicializamos el camino de agua sobre el terreno a false
@@ -134,13 +134,12 @@ public class GeneradorTerreno : MonoBehaviour
 	/// </param>
 	private Bloque seleccionarBloque(int x, int y, int z, int altura)
 	{
-		int maxHeight = terreno.getNumTotalBloquesEnY();
 		Bloque bloque = new Bloque();
 		if(y == 0)
 				bloque = new Bloque(TipoBloque.SUELO, x,y,z);
-		else if (y >= 1  && y <= 2)
+		else if (y == 1)
 				bloque = new Bloque(TipoBloque.TIERRA, x,y,z);
-		else if(y >= 3 && y < altura)
+		else if(y >= 2 && y < altura)
 				bloque = new Bloque(TipoBloque.HIERBA, x,y,z);
 		else		
 				bloque = new Bloque(TipoBloque.VACIO, x,y,z);
