@@ -13,21 +13,21 @@ public class GestosCamara : MonoBehaviour {
 		
 		pan.gestureRecognizedEvent += ( r ) =>
 		{
-			float panX = pan.deltaTranslation.x;
-			float panZ = pan.deltaTranslation.y;
+			float panX = pan.deltaTranslation.x*0.9f;
+			float panZ = pan.deltaTranslation.y*0.9f;
 			Vector3 camPos = Camera.mainCamera.transform.position;
-			float newPosX = Mathf.Clamp(camPos.x + panX, 0, 40);
-			float newPosZ = Mathf.Clamp(camPos.z + panZ, 0, 40);
+			float newCamPosX = Mathf.Clamp(camPos.x + panX, 0, 40);
+			float newCamPosZ = Mathf.Clamp(camPos.z + panZ, 0, 40);
 
-			Camera.mainCamera.transform.position = new Vector3( newPosX, camPos.y, newPosZ);
-			//Debug.Log( "pan recognizer fired: " + r );
+			Camera.mainCamera.transform.position = new Vector3( newCamPosX, camPos.y, newCamPosZ);
+			Debug.Log( "pan recognizer fired: " + r );
 		};
 		
 		// continuous gestures have a complete event so that we know when they are done recognizing
-//		pan.gestureCompleteEvent += r =>
-//		{
-//			//Debug.Log( "pan gesture complete" );
-//		};
+		pan.gestureCompleteEvent += r =>
+		{
+			Debug.Log( "pan gesture complete" );
+		};
 		TouchKit.addGestureRecognizer( pan );
 		
 		
@@ -36,7 +36,7 @@ public class GestosCamara : MonoBehaviour {
 		var pinch = new TKPinchRecognizer();
 		pinch.gestureRecognizedEvent += ( r ) =>
 		{
-			Camera.mainCamera.fieldOfView = Mathf.Clamp(Camera.mainCamera.fieldOfView + pinch.deltaScale * 100, 40, 75);
+			Camera.mainCamera.fieldOfView = Mathf.Clamp(Camera.mainCamera.fieldOfView + pinch.deltaScale * 50, 20, 75);
 //			Debug.Log (pinch.deltaScale);
 //			Debug.Log( "pinch recognizer fired: " + r );
 		};
