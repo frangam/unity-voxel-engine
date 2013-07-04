@@ -91,14 +91,15 @@ public class TipoBloqueBase : IBloque {
 	/// </returns>
 	public virtual bool crearse(Bloque bloque, TipoBloque tipo)
 	{
-		if(bloque.getTipo() != TipoBloque.VACIO){ 
-			return false;
+		bool res = false;
+		
+		//se puede construir en vacio o en agua
+		if(bloque.getTipo() == TipoBloque.AGUA || bloque.getTipo() == TipoBloque.VACIO){
+			bloque.setTipo(tipo); 
+			res = true;
 		}
-//		if(bloque.getChunk() != null){
-//			bloque.getChunk().seHaModificadoElChunk();
-//		}
-		bloque.setTipo(tipo); 
-		return true;
+		
+		return res;
 	}
 	
 	

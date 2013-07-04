@@ -32,7 +32,7 @@ public class GeneradorTerreno : MonoBehaviour
 	/// </summary>
 	public MallaChunk mallaChunkPrefab;
 	
-	public Acciones acciones;
+	public AccionesTerreno acciones;
 	#endregion
 	
 	#region atributos de configuracion del terreno
