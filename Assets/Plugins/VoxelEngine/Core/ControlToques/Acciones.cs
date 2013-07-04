@@ -5,9 +5,16 @@ public class Acciones : MonoBehaviour {
 	
 	private Bloque _bloqueSeleccionado = new Bloque(TipoBloque.DESCONOCIDO);
 	private TipoBloque _tipoBloqueSeleccionado;
-//	private Terreno terreno;
 	private Vector3 _bloqueSeleccionadoPos;
 	private Vector3 _colisionPoint;
+	
+	#region atributos de configuracion desde el inspector
+	public SonidosTerreno sonidosTerreno;
+	
+	public ParticleSystem particulasDestruccionHierba;
+	public ParticleSystem particulasDestruccioTierra;
+	public ParticleSystem particulasDestruccionPiedra;
+	#endregion
 	
 //	public void Init(Terreno terreno)
 //	{
@@ -28,7 +35,7 @@ public class Acciones : MonoBehaviour {
 		//construir bloque si es de tipo vacio (hueco)
 		if ( bloqueSeleccionado.getTipo() == TipoBloque.VACIO)
 		{
-//				_soundController.PlayCreateBlock();
+			sonidosTerreno.playCrearBloque(); //reproducimos sonido de creacion de bloque
 			
 			_bloqueSeleccionado = bloqueSeleccionado;
 			_bloqueSeleccionado.crearse(_tipoBloqueSeleccionado);
@@ -44,55 +51,55 @@ public class Acciones : MonoBehaviour {
 		if ( bloqueSeleccionado.esDibujable())
 		{
 			_bloqueSeleccionado = bloqueSeleccionado;
+			
+			sonidosTerreno.playDestruirBloque(); //reproducimos sonido de destruccion de bloque
+
+			
+			#region efecto de destruccion del bloque
+			ParticleSystem particulasDestruccion = null;
+			
+			//seleccionamos las particulas para la destruccion del bloque segun el tipo del bloque a destruir
+			switch (bloqueSeleccionado.getTipo())
+			{
+			case TipoBloque.HIERBA:
+					particulasDestruccion = particulasDestruccionHierba;
+					break;
+				
+				case TipoBloque.TIERRA:
+					particulasDestruccion = particulasDestruccioTierra;
+					break;
+				
+				case TipoBloque.PIEDRA:
+					particulasDestruccion = particulasDestruccionPiedra;
+					break;
+			}
+			
+			//si se ha seleccionado unas particulas para crear el efecto de destruccion del bloque
+			if (particulasDestruccion != null)
+			{
+				ParticleSystem particulas = GameObject.Instantiate(particulasDestruccion) as ParticleSystem;
+				
+				// Apply the same light of the block that will be destroyed into the particles
+				int x = Mathf.RoundToInt(bloqueSeleccionado.getXTerreno());
+				int y = Mathf.RoundToInt(bloqueSeleccionado.getYTerreno());
+				int z = Mathf.RoundToInt(bloqueSeleccionado.getZTerreno());
+				Bloque bloqueSuperior = Bloques.getBloqueEnCoordsTerreno(x, y+1, z);
+//				float colorParticulas = ((float)topBlock.Light)/255.0f;
+//				particulas.renderer.material.color = new Color(colorParticulas, colorParticulas, colorParticulas);
+				
+				Vector3 posParticulas = new Vector3(bloqueSeleccionado.getXTerreno(), bloqueSeleccionado.getYTerreno(), bloqueSeleccionado.getZTerreno());
+				posParticulas.y += 0.75f;
+				particulas.transform.position = posParticulas;
+			}
+			#endregion
+	
+			//destruimos el bloque
 			_bloqueSeleccionado.destruirse();
 			
 			//si existe algun vecino al bloque a destruir que tenga agua, propagamos el agua
 			if(Bloques.existeAlgunBloqueVecinoConElTipo(bloqueSeleccionado, TipoBloque.AGUA)){
 				Bloques.dejarPasarElAgua(bloqueSeleccionado); //dejamos que pase el agua por este bloque vacio y por todos sus vecino y vecinos de este
 			}
-			
-//			Debug.Log ("Bloque seleccionado: "+ _bloqueSeleccionado.getXTerreno()+","+_bloqueSeleccionado.getYTerreno()+","+_bloqueSeleccionado.getZTerreno());
-	
-//			_soundController.PlayDestroyBlock();
-			
-//			#region DestroyFx
-//			ParticleSystem destroyParticle = null;
-//			
-//			switch (_selectedBlock.Type)
-//			{
-//				case BlockType.Grass:
-//					destroyParticle = _grassDestroy;
-//					break;
-//				
-//				case BlockType.Dirt:
-//					destroyParticle = _dirtyDestroy;
-//					break;
-//				
-//				case BlockType.Stone:
-//					destroyParticle = _stoneDestroy;
-//					break;
-//			}
-//			
-//			if (destroyParticle != null)
-//			{
-//				ParticleSystem particle = GameObject.Instantiate(destroyParticle) as ParticleSystem;
-//				
-//				// Apply the same light of the block that will be destroyed into the particles
-//				int x = Mathf.RoundToInt(_selectedBlockPosition.x);
-//				int y = Mathf.RoundToInt(_selectedBlockPosition.y);
-//				int z = Mathf.RoundToInt(_selectedBlockPosition.z);
-//				Block topBlock = _world[x, y+1, z];
-//				float particleColor = ((float)topBlock.Light)/255.0f;
-//				particle.renderer.material.color = new Color(particleColor, particleColor, particleColor);
-//				
-//				Vector3 particlePos = _selectedBlockPosition;
-//				particlePos.y += 0.75f;
-//				particle.transform.position = particlePos;
-//			}
-//			#endregion
-//			
-//			_selectedBlock.Destroy();
-//			StartCoroutine( _world.RefreshChunkMesh( new Vector3i(_selectedBlockPosition), false  ) );
 			
 			//multitarea: se refresca la renderizacion de la malla del chunk
 			StartCoroutine(GameObject.Find("GeneradorTerreno").GetComponent<GeneradorTerreno>().terreno.ActualizarChunk(bloqueSeleccionado, false  ) );
