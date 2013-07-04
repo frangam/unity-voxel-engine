@@ -145,7 +145,7 @@ public static class Bloques{
 	public static bool existeAlgunBloqueVecinoConElTipo(Bloque bloque, TipoBloque tipoBloqueVecino){
 		bool existe = false; //flag
 		
-		//comprobamos por cada eje de coordenada si existe algun bloque vecido que tenga el tipo indicado
+		//comprobamos por cada eje de coordenada si existe algun bloque vecino que tenga el tipo indicado
 		existe = existeAlgunVecinoEnCoordenadaEje(EjeCoordenada.EJE_X, bloque, tipoBloqueVecino) 
 				|| existeAlgunVecinoEnCoordenadaEje(EjeCoordenada.EJE_Z, bloque, tipoBloqueVecino);
 //				|| existeAlgunVecinoEnCoordenadaEje(EjeCoordenada.EJE_Y, bloque, tipoBloqueVecino);
@@ -155,35 +155,143 @@ public static class Bloques{
 	
 	private static bool existeAlgunVecinoEnCoordenadaEje(EjeCoordenada eje, Bloque bloque, TipoBloque tipoBloqueVecino){
 		bool existe = false; //flag
+		int limiteTerreno = 0;
+		int coordBloqueEnElEje = bloque.getXTerreno(); //coordenada del bloque vecino segun el eje
 		
 		//seleccionamos el limite segun el eje de coordenada
 		switch(eje){
-			case EjeCoordenada.EJE_X: limite = Chunk.numBloquesEnX; break;
-//			case EjeCoordenada.EJE_Y: limite = Chunk.numBloquesEnY; break;
-			case EjeCoordenada.EJE_Z: limite = Chunk.numBloquesEnZ; break;
+			case EjeCoordenada.EJE_X: 
+				limiteTerreno = Terreno.totalBloquesX;
+				coordBloqueEnElEje = bloque.getXTerreno();
+			break;
+//			case EjeCoordenada.EJE_Y: 
+//				limite = Terreno.totalBloquesY;
+//				coordenada = bloque.getYTerreno();
+//			break;
+			case EjeCoordenada.EJE_Z: 
+				limiteTerreno = Terreno.totalBloquesZ;
+				coordBloqueEnElEje = bloque.getZTerreno();
+			break;
 		}
 		
 		//recorremos todos los bloques en el eje de coordenada indicado
-		//i: coordenada en el eje indicado del bloque vecino que recorremos en dicho eje
-		for (int i = coordenada - 1; i <= coordenada + 1 && !existe; i++) {
-			if (i > -1 && i < limite + 1){
+		//i: coordenada del bloque vecino que recorremos en el eje indicado
+		for (int coordVecinoEnElEje = coordBloqueEnElEje - 1; coordVecinoEnElEje <= coordBloqueEnElEje + 1 && !existe; coordVecinoEnElEje++) {
+			//comprobamos los blosques que estan a los limites del terreno tambien
+			if (coordVecinoEnElEje >= -1 && coordVecinoEnElEje < limiteTerreno + 1){
 				Vector3i coordsTerrenoVecino = new Vector3i(); //coordenadas del terreno del bloque vecino
 				
 				//segun el eje, obtenemos las coordenadas del terreno donde buscar al bloque vecino y 
 				//comprobar si su tipo es del tipo indicado
 				switch(eje){
-					case EjeCoordenada.EJE_X: coordsTerrenoVecino = new Vector3i(i, bloque.getYTerreno(), bloque.getZTerreno()); break;
-//					case EjeCoordenada.EJE_Y: coordsTerrenoVecino = new Vector3i(bloque.getXTerreno(), i, bloque.getZTerreno()); break;
-					case EjeCoordenada.EJE_Z: coordsTerrenoVecino = new Vector3i(bloque.getXTerreno(), bloque.getYTerreno(), i); break;
+					case EjeCoordenada.EJE_X: coordsTerrenoVecino = new Vector3i(coordVecinoEnElEje, bloque.getYTerreno(), bloque.getZTerreno()); break;
+//					case EjeCoordenada.EJE_Y: coordsTerrenoVecino = new Vector3i(bloque.getXTerreno(), coordVecinoEnElEje, bloque.getZTerreno()); break;
+					case EjeCoordenada.EJE_Z: coordsTerrenoVecino = new Vector3i(bloque.getXTerreno(), bloque.getYTerreno(), coordVecinoEnElEje); break;
 				}
 				
-				//la concicicion para que exista un vecino que verifica el tipo de tile pasado como parametro
-				existe = Bloques.getBloqueEnCoordsTerreno(coordsTerrenoVecino).getTipo() == tipoBloqueVecino;
+				//caso especial: tipo del vecino sea agua y que la coordenada y del bloque no esta por encima del nivel del mar 
+				if(tipoBloqueVecino == TipoBloque.AGUA && bloque.getYTerreno() < Terreno.nivelDelAgua){
+					TipoBloque tipoVecinoRecorrido = Bloques.getBloqueEnCoordsTerreno(coordsTerrenoVecino).getTipo();
+				 	existe = tipoVecinoRecorrido == TipoBloque.AGUA
+							|| tipoVecinoRecorrido == TipoBloque.LIMITE_TERRENO; //>> tambien comprobamos que el bloque devuelto es de tipo limite (consideramos que hay agua al rededor del terreno)
+				}
+				else{ //caso general
+					//la concicicion para que exista un vecino que verifica el tipo de tile pasado como parametro
+					existe = Bloques.getBloqueEnCoordsTerreno(coordsTerrenoVecino).getTipo() == tipoBloqueVecino;
+				}
 			}	
 		}
 		
 		return existe;
 	}
+	
+	#region propagacion de agua por bloques vacios
+	/// <summary>
+	/// Deja que pase el agua por el bloque si es vacio
+	/// </summary>
+	/// <returns>
+	/// True si se ha dejado pasar el agua
+	/// </returns>
+	/// <param name='bloque'>
+	/// El bloque por el que se tiene que dejar pasar el agua si es vacio
+	/// </param>
+	public static bool dejarPasarElAgua(Bloque bloque){
+		bool haPasadoElAgua = false;
+		
+		//si es de tipo vacio
+		if(bloque.getTipo() == TipoBloque.VACIO){
+			bloque.setTipo(TipoBloque.AGUA); //le cambiamos el tipo a agua
+			dejarPasarElAguaPorVecinosHuecos(bloque); //dejar pasar el agua por los vecinos al bloque que sean huecos
+			haPasadoElAgua = true;
+		}
+		
+		return haPasadoElAgua;
+	}
+	
+	/// <summary>
+	/// Deja que pase el agua por los bloques vacios que son vecinos al bloque indicado
+	/// </summary>
+	/// <param name='bloque'>
+	/// El bloque al que hay que buscarle los vecinos que sean vacios y dejar pasar el agua por ellos y 
+	/// con los vecinos que sean vacios de estos y asi sucesivamente
+	/// </param>
+	private static void dejarPasarElAguaPorVecinosHuecos(Bloque bloque){
+		int limiteIzq = 0; //limite izquierdo del terreno
+		int limiteDcha = Terreno.totalBloquesX + 1; //limite derecho del terreno
+		int limiteInf = 0; //limite superior del terreno
+		int limiteSup = Terreno.totalBloquesZ + 1; //limite superior del terreno
+		int limitePisoSup = Terreno.totalBloquesY; //numero de pisos del terreno
+		int i = bloque.getXTerreno(); //coordenada x del terreno donde se localiza el bloque que comprobamos
+		int j = bloque.getYTerreno(); //coordenada y del terreno donde se localiza el bloque que comprobamos
+		int k = bloque.getZTerreno(); //coordenada z del terreno donde se localiza el bloque que comprobamos
+
+		
+		//comprobamos los limites del terreno y el camino de agua ya creado (para no repetir)
+		if(i>=limiteIzq && i<limiteDcha && j>=0 && j< limitePisoSup && k>=limiteInf && k<limiteSup && Terreno.caminoAgua[i, j, k] == false){
+			//caso base: el bloque es hueco, se rellena con agua
+			if(bloque.getTipo() == TipoBloque.VACIO){ //el bloque es un hueco		
+				bloque.setTipo(TipoBloque.AGUA); //le cambiamos el tipo a agua
+				
+				//TODO: cambiar todos los chunk cuando se sepan todos los bloques que ha afectado
+				Chunks.getChunkQueContieneAlBloque(bloque).seHaModificadoElChunk();
+				
+				//actualizar camino de agua
+				if(Terreno.caminoAgua[i, j, k] == false){
+					Terreno.caminoAgua[i, j, k] = true;	
+				}
+			}
+			
+			//si el bloque es agua y existe algun vecino que es hueco, seguimos propagando el agua por los vecinos huecos de ese vecino
+			if(bloque.getTipo() == TipoBloque.AGUA && existeAlgunBloqueVecinoConElTipo(bloque, TipoBloque.VACIO)){
+				//vecino de abajo
+				Bloque vecino = getBloqueEnCoordsTerreno(i-1, j, k); 
+				dejarPasarElAguaPorVecinosHuecos(vecino);
+				
+				//vecino de arriba
+				vecino = getBloqueEnCoordsTerreno(i+1, j, k); 
+				dejarPasarElAguaPorVecinosHuecos(vecino); 
+				
+				//vecino de la izquierda
+				vecino = getBloqueEnCoordsTerreno(i, j, k-1); 
+				dejarPasarElAguaPorVecinosHuecos(vecino); 
+				
+				//vecino de la derecha
+				vecino = getBloqueEnCoordsTerreno(i, j, k+1); 
+				dejarPasarElAguaPorVecinosHuecos(vecino); 
+				
+				//vecino del piso inferior
+				vecino = getBloqueEnCoordsTerreno(i, j-1, k);
+				dejarPasarElAguaPorVecinosHuecos(vecino);
+				
+				//vecino del piso superior
+				vecino = getBloqueEnCoordsTerreno(i, j+1, k);
+				dejarPasarElAguaPorVecinosHuecos(vecino); 
+			}
+			
+				
+		}
+	}
+	#endregion
 }
 
 
