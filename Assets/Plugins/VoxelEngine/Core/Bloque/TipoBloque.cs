@@ -6,6 +6,7 @@ public enum TipoBloque{
 	DESCONOCIDO = 0
 	,LIMITE_TERRENO
 	,SUELO
+	,PROXIMO_A_SUELO
 	,AGUA
 	,HIERBA
 	,PIEDRA
