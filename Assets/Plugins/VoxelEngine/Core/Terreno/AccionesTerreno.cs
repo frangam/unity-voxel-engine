@@ -33,22 +33,39 @@ public class AccionesTerreno : MonoBehaviour {
 		Bloque bloqueSeleccionado = GetBloque(true, posicionToque);
 		
 		//construir bloque si es de tipo vacio (hueco)
-		if ( bloqueSeleccionado.getTipo() == TipoBloque.VACIO)
-		{
+		if ( bloqueSeleccionado.getTipo() == TipoBloque.VACIO){
+			//bloque que esta debajo
+			Bloque bloqueDebajo = Bloques.getBloqueEnCoordsTerreno(bloqueSeleccionado.getXTerreno(), bloqueSeleccionado.getYTerreno() - 1, bloqueSeleccionado.getZTerreno());
+			
 			sonidosTerreno.playCrearBloque(); //reproducimos sonido de creacion de bloque
 			
-			_bloqueSeleccionado = bloqueSeleccionado;
-			_bloqueSeleccionado.crearse(_tipoBloqueSeleccionado);
-	
-			//multitarea: se refresca la renderizacion de la malla del chunk
-			StartCoroutine(GameObject.Find("GeneradorTerreno").GetComponent<GeneradorTerreno>().terreno.ActualizarChunk(bloqueSeleccionado, false  ) );
+			//si el bloque se que va a construir tiene debajo agua
+			if(bloqueDebajo.getTipo() == TipoBloque.AGUA){
+				//tenemos que crear todos los bloques que tengan agua hasta encontrar el suelo del terreno
+				while(bloqueDebajo.getTipo() == TipoBloque.AGUA && bloqueDebajo.getTipo() != TipoBloque.SUELO){
+					Bloque bloqueConstruir = bloqueDebajo;
+					bloqueConstruir.crearse(_tipoBloqueSeleccionado);
+					
+					//multitarea: se refresca la renderizacion de la malla del chunk
+					StartCoroutine(GameObject.Find("GeneradorTerreno").GetComponent<GeneradorTerreno>().terreno.ActualizarChunk(bloqueConstruir, false  ) );
+					
+					bloqueDebajo = Bloques.getBloqueEnCoordsTerreno(bloqueDebajo.getXTerreno(), bloqueDebajo.getYTerreno() - 1, bloqueDebajo.getZTerreno());
+				}
+			}
+			else{
+				//creamos el bloque
+				_bloqueSeleccionado = bloqueSeleccionado;
+				_bloqueSeleccionado.crearse(_tipoBloqueSeleccionado);
+				//multitarea: se refresca la renderizacion de la malla del chunk
+				StartCoroutine(GameObject.Find("GeneradorTerreno").GetComponent<GeneradorTerreno>().terreno.ActualizarChunk(bloqueSeleccionado, false  ) );
+			}			
 		}		
 	}
 	
 	public void DestroyBlock(Vector2 posicionToque = new Vector2()){		
 		Bloque bloqueSeleccionado = GetBloque(false, posicionToque);
 		
-		if ( bloqueSeleccionado.esDibujable())
+		if ( bloqueSeleccionado.esDibujable() && bloqueSeleccionado.getTipo() != TipoBloque.AGUA)
 		{
 			_bloqueSeleccionado = bloqueSeleccionado;
 			
