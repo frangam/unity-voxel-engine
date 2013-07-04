@@ -129,6 +129,61 @@ public static class Bloques{
 		}
 	}
 	#endregion
+	
+	/// <summary>
+	/// Comprueba si existe algun bloque vecino al indicado con el tipo indicado
+	/// </summary>
+	/// <returns>
+	/// El bloque
+	/// </returns>
+	/// <param name='bloque'>
+	/// <c>true</c> si existe algun bloque vecino que tenga el tipo indicado
+	/// </param>
+	/// <param name='tipoBloqueVecino'>
+	/// El tipo de bloque que debe ser alguno de los vecinos
+	/// </param>
+	public static bool existeAlgunBloqueVecinoConElTipo(Bloque bloque, TipoBloque tipoBloqueVecino){
+		bool existe = false; //flag
+		
+		//comprobamos por cada eje de coordenada si existe algun bloque vecido que tenga el tipo indicado
+		existe = existeAlgunVecinoEnCoordenadaEje(EjeCoordenada.EJE_X, bloque, tipoBloqueVecino) 
+				|| existeAlgunVecinoEnCoordenadaEje(EjeCoordenada.EJE_Z, bloque, tipoBloqueVecino);
+//				|| existeAlgunVecinoEnCoordenadaEje(EjeCoordenada.EJE_Y, bloque, tipoBloqueVecino);
+		
+		return existe;
+	}
+	
+	private static bool existeAlgunVecinoEnCoordenadaEje(EjeCoordenada eje, Bloque bloque, TipoBloque tipoBloqueVecino){
+		bool existe = false; //flag
+		
+		//seleccionamos el limite segun el eje de coordenada
+		switch(eje){
+			case EjeCoordenada.EJE_X: limite = Chunk.numBloquesEnX; break;
+//			case EjeCoordenada.EJE_Y: limite = Chunk.numBloquesEnY; break;
+			case EjeCoordenada.EJE_Z: limite = Chunk.numBloquesEnZ; break;
+		}
+		
+		//recorremos todos los bloques en el eje de coordenada indicado
+		//i: coordenada en el eje indicado del bloque vecino que recorremos en dicho eje
+		for (int i = coordenada - 1; i <= coordenada + 1 && !existe; i++) {
+			if (i > -1 && i < limite + 1){
+				Vector3i coordsTerrenoVecino = new Vector3i(); //coordenadas del terreno del bloque vecino
+				
+				//segun el eje, obtenemos las coordenadas del terreno donde buscar al bloque vecino y 
+				//comprobar si su tipo es del tipo indicado
+				switch(eje){
+					case EjeCoordenada.EJE_X: coordsTerrenoVecino = new Vector3i(i, bloque.getYTerreno(), bloque.getZTerreno()); break;
+//					case EjeCoordenada.EJE_Y: coordsTerrenoVecino = new Vector3i(bloque.getXTerreno(), i, bloque.getZTerreno()); break;
+					case EjeCoordenada.EJE_Z: coordsTerrenoVecino = new Vector3i(bloque.getXTerreno(), bloque.getYTerreno(), i); break;
+				}
+				
+				//la concicicion para que exista un vecino que verifica el tipo de tile pasado como parametro
+				existe = Bloques.getBloqueEnCoordsTerreno(coordsTerrenoVecino).getTipo() == tipoBloqueVecino;
+			}	
+		}
+		
+		return existe;
+	}
 }
 
 
