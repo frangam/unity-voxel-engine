@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Acciones : MonoBehaviour {
+public class AccionesTerreno : MonoBehaviour {
 	
 	private Bloque _bloqueSeleccionado = new Bloque(TipoBloque.DESCONOCIDO);
 	private TipoBloque _tipoBloqueSeleccionado;

@@ -10,7 +10,7 @@ public class AccionSobreChunk : MonoBehaviour {
 	/// <summary>
 	/// las acciones que se pueden realizar sobre el chunk
 	/// </summary>
-	private Acciones acciones;
+	private AccionesTerreno acciones;
 	
 	void Start () {
 		acciones = GameObject.Find("GeneradorTerreno").GetComponent<GeneradorTerreno>().acciones;
