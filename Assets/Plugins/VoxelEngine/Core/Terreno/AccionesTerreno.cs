@@ -48,7 +48,7 @@ public class AccionesTerreno : MonoBehaviour {
 	public void DestroyBlock(Vector2 posicionToque = new Vector2()){		
 		Bloque bloqueSeleccionado = GetBloque(false, posicionToque);
 		
-		if ( bloqueSeleccionado.esDibujable())
+		if ( bloqueSeleccionado.esDibujable() && bloqueSeleccionado.getTipo() != TipoBloque.AGUA)
 		{
 			_bloqueSeleccionado = bloqueSeleccionado;
 			
