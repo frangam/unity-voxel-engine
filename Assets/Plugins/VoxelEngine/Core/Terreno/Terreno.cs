@@ -18,6 +18,8 @@ public class Terreno {
 	private int numTotalBloquesEnY;
 	private int numTotalBloquesEnZ;
 	
+	private int nivelAgua;
+	
 	
 	#region estaticas
 	public static int totalChunksX;
@@ -27,10 +29,20 @@ public class Terreno {
 	public static int totalBloquesX;
 	public static int totalBloquesY;
 	public static int totalBloquesZ;
+	
+	public static int nivelDelAgua = 3;
 	#endregion
 	
-	
+	/// <summary>
+	/// Las porciones del terreno
+	/// </summary>
 	public static Chunk[,,] chunks;
+	
+	/// <summary>
+	/// camino que se va rellenando con agua (true: contiene agua, false: no la contiene)
+	/// </summary>
+	public static bool[,,] caminoAgua;
+
 	
 //	public Terreno()
 //	{
@@ -38,13 +50,20 @@ public class Terreno {
 //		inicializarChunks();
 //	}
 	
-	public Terreno(int numChunkX, int numChunkY, int numChunkZ)
+	public Terreno(int numChunkX, int numChunkY, int numChunkZ, int _nivelDelAgua)
 	{
 		numChunksVisiblesEnX = numChunkX;
 		numChunksVisiblesEnY = numChunkY;
 		numChunksVisiblesEnZ = numChunkZ;
+		
 		chunks = new Chunk[numChunkX, numChunkY, numChunkZ];
 		inicializarChunks();
+		
+		//inicializamos el nivel del agua
+		this.nivelAgua = _nivelDelAgua;
+		nivelDelAgua = Mathf.Clamp(_nivelDelAgua, 0, numTotalBloquesEnY);
+		
+		caminoAgua = new bool[totalBloquesX, totalBloquesY, totalBloquesZ]; //inicializo camino de agua; 
 	}
 	
 	#region getters
