@@ -16,12 +16,18 @@ public class GestosCamara : MonoBehaviour {
 			float panX = pan.deltaTranslation.x;
 			float panY = pan.deltaTranslation.y;
 			Vector3 camPos = Camera.mainCamera.transform.position;
-			float newCamPosX = Mathf.Clamp(camPos.x + panX, -75, -30);
-			float newCamPosY = Mathf.Clamp(camPos.y + panY, -75, -30);
-			if((newCamPosX != -75 || newCamPosX != -35) && ( newCamPosY != -75 || newCamPosY != -35 ))
-				Camera.mainCamera.transform.position -= new Vector3(panX, panY) / 25;
-				
-			//Camera.mainCamera.transform.position = new Vector3(newCamPosX, camPos.y, newCamPosZ);
+//			float newCamPosX = Mathf.Clamp(camPos.x - panX, -100, -7);
+//			float newCamPosY = Mathf.Clamp(camPos.y - panY, 48, 87);
+			
+			Vector3 j = camPos - new Vector3(panX, panY) / 25;
+			float jx = Mathf.Clamp(j.x, -90, -12);
+			float jy = Mathf.Clamp(j.y, 48, 80);
+			
+			Vector3 res = new Vector3(jx,jy, j.z);
+			
+			Camera.mainCamera.transform.position = res;
+
+			//Camera.mainCamera.transform.position = new Vector3(newCamPosX, newCamPosY, camPos.z);
 			Debug.Log( "pan recognizer fired: " + r );
 		};
 		
