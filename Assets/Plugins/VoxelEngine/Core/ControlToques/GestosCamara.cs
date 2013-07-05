@@ -13,6 +13,19 @@ public class GestosCamara : MonoBehaviour {
 		
 		pan.gestureRecognizedEvent += ( r ) =>
 		{
+			float LimiteMinX = -82f;
+			float LimiteMaxX = -23f;
+			float LimiteMinY = 55f;
+			float LimiteMaxY = 77f;
+			
+			float PuntoMedioX = (LimiteMaxX+LimiteMinX) / 2;
+			float PuntoMedioY = (LimiteMaxY+LimiteMinY) / 2;
+			
+			float PuntoMedioMinX = (LimiteMinX + PuntoMedioX) / 2;
+			float PuntoMedioMaxX = (LimiteMaxX + PuntoMedioX) / 2;
+			float PuntoMedioMinY = (LimiteMinY + PuntoMedioY) / 2;
+			float PuntoMedioMaxY = (LimiteMaxY + PuntoMedioY) / 2;
+			
 			float panX = pan.deltaTranslation.x;
 			float panY = pan.deltaTranslation.y;
 			Vector3 camPos = Camera.mainCamera.transform.position;
@@ -20,21 +33,35 @@ public class GestosCamara : MonoBehaviour {
 //			float newCamPosY = Mathf.Clamp(camPos.y - panY, 48, 87);
 			
 			Vector3 j = camPos - new Vector3(panX, panY) / 25;
-			float jx = Mathf.Clamp(j.x, -90, -12);
-			float jy = Mathf.Clamp(j.y, 48, 80);
+
+			float jx = Mathf.Clamp(j.x, -82, -23);
+			float jy = Mathf.Clamp(j.y, 55, 77);
 			
 			Vector3 res = new Vector3(jx,jy, j.z);
+			Debug.Log (jx+" "+jy+" "+PuntoMedioMaxX+" "+PuntoMedioMaxY);
 			
-			Camera.mainCamera.transform.position = res;
-
+			if(jx > PuntoMedioMaxX && jy > PuntoMedioMaxY){
+				//Camera.mainCamera.transform.position = new Vector3(Mathf.Clamp(j.x, PuntoMedioMaxX, PuntoMedioX), Mathf.Clamp(j.y, PuntoMedioMaxY, PuntoMedioY));
+				//Camera.mainCamera.transform.position = new Vector3(PuntoMedioMaxX,PuntoMedioMaxY, j.z);
+			}else if(jx > PuntoMedioMaxX && jy < PuntoMedioMinY){
+//				Camera.mainCamera.transform.position = new Vector3(PuntoMedioMaxX, PuntoMedioMinY);
+				
+			}else if(jx < PuntoMedioMinX && jy > PuntoMedioMaxY){
+//				Camera.mainCamera.transform.position = new Vector3(PuntoMedioMinX, PuntoMedioMaxY);
+				
+			}else if(jx < PuntoMedioMinX && jy < PuntoMedioMinY){
+//				Camera.mainCamera.transform.position = new Vector3(PuntoMedioMinX, PuntoMedioMinY);
+			}else{
+				Camera.mainCamera.transform.position = res;
+			}
 			//Camera.mainCamera.transform.position = new Vector3(newCamPosX, newCamPosY, camPos.z);
-			Debug.Log( "pan recognizer fired: " + r );
+			//Debug.Log( "pan recognizer fired: " + r );
 		};
 		
 		// continuous gestures have a complete event so that we know when they are done recognizing
 		pan.gestureCompleteEvent += r =>
 		{
-			Debug.Log( "pan gesture complete" );
+			//Debug.Log( "pan gesture complete" );
 		};
 		TouchKit.addGestureRecognizer( pan );
 		
