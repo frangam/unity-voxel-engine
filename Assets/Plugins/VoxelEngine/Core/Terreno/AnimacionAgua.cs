@@ -4,14 +4,13 @@ using System.Collections;
 // Sets up transformation matrices to scale&scroll water waves
 // for the case where graphics card does not support vertex programs.
 
-//[ExecuteInEditMode]
+
 public class AnimacionAgua : MonoBehaviour
 {
 	void Update()
 	{
 		if( !renderer )
 			return;
-//		Material mat = renderer.sharedMaterial;
 		Material mat = renderer.sharedMaterials[0];//material del agua
 		
 		if( !mat )

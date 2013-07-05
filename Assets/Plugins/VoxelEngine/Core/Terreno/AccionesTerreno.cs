@@ -101,8 +101,6 @@ public class AccionesTerreno : MonoBehaviour {
 				int y = Mathf.RoundToInt(bloqueSeleccionado.getYTerreno());
 				int z = Mathf.RoundToInt(bloqueSeleccionado.getZTerreno());
 				Bloque bloqueSuperior = Bloques.getBloqueEnCoordsTerreno(x, y+1, z);
-//				float colorParticulas = ((float)topBlock.Light)/255.0f;
-//				particulas.renderer.material.color = new Color(colorParticulas, colorParticulas, colorParticulas);
 				
 				Vector3 posParticulas = new Vector3(bloqueSeleccionado.getXTerreno(), bloqueSeleccionado.getYTerreno(), bloqueSeleccionado.getZTerreno());
 				posParticulas.y += 0.75f;
@@ -129,11 +127,9 @@ public class AccionesTerreno : MonoBehaviour {
 		
 		RaycastHit hit = new RaycastHit();
 		
-		Debug.DrawRay (ray.origin, ray.direction, Color.black, 100f); //solo para debug, para ver el rayo lanzado
 		Bloque bloque = new Bloque();
     	if (Physics.Raycast(ray, out hit, 1000.0f) == true)
 		{	
-			Debug.DrawRay (ray.origin, ray.direction, Color.black, 100f); //solo para debug, para ver el rayo lanzado
 			_colisionPoint = hit.point;
             Vector3 hp = _colisionPoint + 0.0001f * ray.direction;
 
@@ -190,20 +186,5 @@ public class AccionesTerreno : MonoBehaviour {
 		}		
 		
 		return bloque;
-	}
-	
-	void OnDrawGizmos() 
-	{
-//		if (Application.isPlaying == true)
-//		{
-//			Gizmos.DrawRay(Camera.main.ScreenPointToRay( new Vector3(Screen.width/2f, Screen.height/2f, 0.0f) ) );
-//			
-//			if ( _selectedBlock != null && _selectedBlock.Type != BlockType.Unknown )
-//			{
-//				Vector3 cubePos = _selectedBlockPosition + Vector3.one/2;
-//				Gizmos.color = Color.red;
-//				Gizmos.DrawWireCube( cubePos, Vector3.one*1.05f );
-//			}
-//		}
 	}
 }

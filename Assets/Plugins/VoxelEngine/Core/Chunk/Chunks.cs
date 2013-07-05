@@ -65,7 +65,6 @@ public static class Chunks{
 			if(!coordChunkFueraRango){
 				//ahora si obtenemos el chunk segun las coordenas de chunk respecto del terreno
 				chunk = Terreno.chunks[xChunk, yChunk, zChunk];
-//		        chunk = GameObject.Find("GeneradorTerreno").GetComponent<GeneradorTerreno>().terreno.getChunks()[xChunk,yChunk,zChunk];
 				
 			}
 		}

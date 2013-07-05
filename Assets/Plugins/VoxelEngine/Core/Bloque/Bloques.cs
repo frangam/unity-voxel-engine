@@ -120,10 +120,6 @@ public static class Bloques{
 			
 			//obtenemos el chunk del terreno
 			Chunk chunk = Terreno.chunks[xChunk, yChunk, zChunk];
-			
-//			Se tarda mas en generar el terreno si el chunk se obtiene asi:
-//			Chunk chunk = GameObject.Find("GeneradorTerreno").GetComponent<GeneradorTerreno>().terreno.getChunks()[xChunk, yChunk, zChunk];
-			
 			//modificamos el bloque con el nuevo bloque
 			chunk.setBloque(bloque, xBloque, yBloque, zBloque);
 		}
@@ -148,7 +144,6 @@ public static class Bloques{
 		//comprobamos por cada eje de coordenada si existe algun bloque vecino que tenga el tipo indicado
 		existe = existeAlgunVecinoEnCoordenadaEje(EjeCoordenada.EJE_X, bloque, tipoBloqueVecino) 
 				|| existeAlgunVecinoEnCoordenadaEje(EjeCoordenada.EJE_Z, bloque, tipoBloqueVecino);
-//				|| existeAlgunVecinoEnCoordenadaEje(EjeCoordenada.EJE_Y, bloque, tipoBloqueVecino);
 		
 		return existe;
 	}
@@ -164,10 +159,6 @@ public static class Bloques{
 				limiteTerreno = Terreno.totalBloquesX;
 				coordBloqueEnElEje = bloque.getXTerreno();
 			break;
-//			case EjeCoordenada.EJE_Y: 
-//				limite = Terreno.totalBloquesY;
-//				coordenada = bloque.getYTerreno();
-//			break;
 			case EjeCoordenada.EJE_Z: 
 				limiteTerreno = Terreno.totalBloquesZ;
 				coordBloqueEnElEje = bloque.getZTerreno();
@@ -185,7 +176,6 @@ public static class Bloques{
 				//comprobar si su tipo es del tipo indicado
 				switch(eje){
 					case EjeCoordenada.EJE_X: coordsTerrenoVecino = new Vector3i(coordVecinoEnElEje, bloque.getYTerreno(), bloque.getZTerreno()); break;
-//					case EjeCoordenada.EJE_Y: coordsTerrenoVecino = new Vector3i(bloque.getXTerreno(), coordVecinoEnElEje, bloque.getZTerreno()); break;
 					case EjeCoordenada.EJE_Z: coordsTerrenoVecino = new Vector3i(bloque.getXTerreno(), bloque.getYTerreno(), coordVecinoEnElEje); break;
 				}
 				

@@ -17,11 +17,6 @@ public class AccionSobreChunk : MonoBehaviour {
 		GetComponent<TapGesture>().StateChanged += tapSobreTile; //le adjunto el nombre del metodo para el evento del gesto tap
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-	
 	#region gestion del gesto tap
 	/// <summary>
 	/// Gestion del gesto Tap sobre el chunk
@@ -40,7 +35,6 @@ public class AccionSobreChunk : MonoBehaviour {
 		switch(e.State){
 			case  Gesture.GestureState.Began: //fin del gesto
 				posicionToque = gesto.PreviousScreenPosition;
-				Debug.Log("tocando chunk en posicion screen: "+posicionToque);
 			
 				//segun el tipo de accion a realizar sobre el terreno
 				switch(UIPantalla.accionARealizarEnTerreno){
