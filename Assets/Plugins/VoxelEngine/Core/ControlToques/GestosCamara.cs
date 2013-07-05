@@ -44,10 +44,10 @@ public class GestosCamara : MonoBehaviour {
 		var pinch = new TKPinchRecognizer();
 		pinch.gestureRecognizedEvent += ( r ) =>
 		{
-			Camera.mainCamera.orthographicSize = Mathf.Clamp(Camera.mainCamera.orthographicSize + pinch.deltaScale, 9, 25);
+			Camera.mainCamera.orthographicSize = Mathf.Clamp(Camera.mainCamera.orthographicSize + pinch.deltaScale*10, 9, 25);
 //			Camera.mainCamera.fieldOfView = Mathf.Clamp(Camera.mainCamera.fieldOfView + pinch.deltaScale * 50, 20, 75);
 //			Debug.Log (pinch.deltaScale);
-//			Debug.Log( "pinch recognizer fired: " + r );
+			Debug.Log( "pinch recognizer fired: " + r );
 		};
 		TouchKit.addGestureRecognizer( pinch );
 
