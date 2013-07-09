@@ -76,7 +76,7 @@ public class GeneradorTerreno : MonoBehaviour
 				int altura = Mathf.RoundToInt(noise.CoherentNoise(x,0,z)*10.0f+ 2f);
 				
 				for(int y=0; y<terreno.getNumTotalBloquesEnY(); y++){
-					Terreno.caminoAgua[x, y, z] = false; //inicializamos el camino de agua sobre el terreno a false
+//					Terreno.caminoAgua[x, y, z] = false; //inicializamos el camino de agua sobre el terreno a false
 					Bloques.setBloqueEnCoordsTerreno(seleccionarBloque(x,y,z, altura),x,y,z); 
 				}
 			}
