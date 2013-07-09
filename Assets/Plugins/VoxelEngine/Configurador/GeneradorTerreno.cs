@@ -32,12 +32,15 @@ public class GeneradorTerreno : MonoBehaviour
 	/// </summary>
 	public MallaChunk mallaChunkPrefab;
 	
-	public Acciones acciones;
+	public AccionesTerreno acciones;
 	#endregion
 	
+	#region atributos de configuracion del terreno
 	public int numChunksEnX = 5;
 	public int numChunksEnY = 1;
 	public int numChunksEnZ = 5;
+	public int nivelDelAgua = 3;
+	#endregion
 	
 	#region metodos publicos
 	public MaterialChunkRenderizable[] Materiales{
@@ -46,28 +49,6 @@ public class GeneradorTerreno : MonoBehaviour
 	#endregion
 	
 	#region metodos privados
-//	private void generar(){		
-//		terreno.inicializarChunks();//inicializar los chunks del terreno
-//		
-//		//generamos los datos del terreno
-//		for(int x=0; x<terreno.getNumTotalBloquesEnX(); x++){
-//			for(int y=0; y<terreno.getNumTotalBloquesEnY(); y++){
-//				for(int z=0; z<terreno.getNumTotalBloquesEnZ(); z++){
-//					//creamos los bloques en coordenadas de terreno
-////					terreno.setBloque(new Bloque(TipoBloque.AGUA), x, y, z);
-//				}
-//			}
-//		}
-//		
-//		//generamos la malla del terreno
-//		for (int x = 0; x <  terreno.getNumChunksVisiblesEnX(); x++){
-//			for (int y = 0; y <  terreno.getNumChunksVisiblesEnY(); y++){
-//				for (int z = 0; z <  terreno.getNumChunksVisiblesEnZ(); z++){
-//					crearMallaDelTerreno(x, y, z);
-//				}
-//			}
-//		}
-//	}
 	
 	/// <summary>
 	/// Genera el terreno de forma aleatoria, aplicando un algoritmo de ruido 3D
@@ -75,16 +56,28 @@ public class GeneradorTerreno : MonoBehaviour
 	private void generarTerrenoAleatorio()
 	{
 		SimplexNoise3D noise = new SimplexNoise3D(); //el algoritmo de ruido para generar montanias
-		terreno = new Terreno(numChunksEnX, numChunksEnY, numChunksEnZ);
+		terreno = new Terreno(numChunksEnX, numChunksEnY, numChunksEnZ, nivelDelAgua);
+		
+		if(nivelDelAgua > Terreno.totalBloquesY || nivelDelAgua < 0){
+			Debug.Log("Nivel del Agua fuera de los limites");
+		}
+		else{
+			Transform aguaAlrededor = GameObject.Find("AguaAlrededor").transform; //obtenemos los hijos de AguaAlrededor
+			
+			//por cada parte del agua, le cambiamos la altura a su posicion segun el nivel del agua indicado
+			foreach(Transform t in aguaAlrededor){
+				t.position = new Vector3(t.position.x, nivelDelAgua, t.position.z);
+			}
+		}
 
 		//vamos adjuntandole al terreno los bloques		
 		for(int x=0; x<terreno.getNumTotalBloquesEnX(); x++){
 			for(int z=0; z<terreno.getNumTotalBloquesEnZ(); z++){
-				int altura = Mathf.RoundToInt(noise.CoherentNoise(x,0,z) *35.0f +5.0f);
+				int altura = Mathf.RoundToInt(noise.CoherentNoise(x,0,z)*10.0f+ 2f);
 				
 				for(int y=0; y<terreno.getNumTotalBloquesEnY(); y++){
-					Bloques.setBloqueEnCoordsTerreno(seleccionarBloque(x,y,z, altura),x,y,z);
-//					terreno.setBloque (seleccionarBloque(x,y,z, altura),x,y,z); 
+//					Terreno.caminoAgua[x, y, z] = false; //inicializamos el camino de agua sobre el terreno a false
+					Bloques.setBloqueEnCoordsTerreno(seleccionarBloque(x,y,z, altura),x,y,z); 
 				}
 			}
 		}
@@ -118,16 +111,21 @@ public class GeneradorTerreno : MonoBehaviour
 	/// </param>
 	private Bloque seleccionarBloque(int x, int y, int z, int altura)
 	{
-		int maxHeight = terreno.getNumTotalBloquesEnY();
 		Bloque bloque = new Bloque();
+		TipoBloque tipoElegido = TipoBloque.SUELO;
+		
 		if(y == 0)
-				bloque = new Bloque(TipoBloque.SUELO, x,y,z);
-		else if (y >= 1  && y <= 2)
-				bloque = new Bloque(TipoBloque.TIERRA, x,y,z);
+			tipoElegido = TipoBloque.SUELO;
+		else if( y == 1)
+			tipoElegido = TipoBloque.PROXIMO_A_SUELO;
+		else if (y==2)
+			tipoElegido = TipoBloque.TIERRA;
 		else if(y >= 3 && y < altura)
-				bloque = new Bloque(TipoBloque.HIERBA, x,y,z);
+			tipoElegido = TipoBloque.HIERBA;
 		else		
-				bloque = new Bloque(TipoBloque.VACIO, x,y,z);
+			tipoElegido = TipoBloque.VACIO;
+		
+		bloque = new Bloque(tipoElegido, x,y,z);
 		
 		return bloque;
 	}
@@ -136,7 +134,7 @@ public class GeneradorTerreno : MonoBehaviour
 	private void crearMallaDelTerreno(int x, int y, int z){
 		MallaChunk mallaChunk = Instantiate(mallaChunkPrefab) as MallaChunk; //instanciamos nuestro prefab de MallaChunk
 		mallaChunk.name = terreno.getChunks()[x,y,z].ToString(); //le damos el nombre al GameObject
-		mallaChunk.transform.parent = terreno.transformTerreno; //asignamos el padre de la malla chunk la transform del terreno
+		mallaChunk.transform.parent = GameObject.Find("Terreno").transform; //asignamos el padre de la malla chunk la transform del terreno
 		mallaChunk.transform.position = new Vector3(x*Chunk.numBloquesEnX, y*Chunk.numBloquesEnY, z*Chunk.numBloquesEnZ);
 		mallaChunk.setChunk(terreno.getChunks()[x,y,z]); //asinamos el chunk a su malla
 		terreno.crearMallaChunk(x, y, z, mallaChunk); //crear la malla del chunk 		
@@ -148,16 +146,7 @@ public class GeneradorTerreno : MonoBehaviour
 	
 	#region Unity
 	public void Start(){
-		//timer para medir el tiempo que se tarda en generar el terreno
-		var timer = System.Diagnostics.Stopwatch.StartNew();
-		timer.Start(); //inicializar timer
-		
-		//generacion del terreno aleatorio
 		generarTerrenoAleatorio(); 
-		
-		//detenemos timer y mostramos el tiempo que ha tardado en generarse el terreno
-		timer.Stop();
-		Debug.Log ("tiempo generacion terreno: " + timer.ElapsedMilliseconds);
 	}
 	
 	#endregion

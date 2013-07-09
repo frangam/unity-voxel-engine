@@ -7,28 +7,47 @@ public class GestosCamara : MonoBehaviour {
 	void Start () {
 		
 		var pan = new TKPanRecognizer();		
-		// when using in conjunction with a pinch or rotation recognizer setting the min touches to 2 smoothes movement greatly
-//		if( Application.platform == RuntimePlatform.IPhonePlayer )
-//			pan.minimumNumberOfTouches = 2;
 		
 		pan.gestureRecognizedEvent += ( r ) =>
 		{
-			float panX = pan.deltaTranslation.x / 100;
-			float panZ = pan.deltaTranslation.y / 100;
+			float LimiteMinX = -82f;
+			float LimiteMaxX = -23f;
+			float LimiteMinY = 55f;
+			float LimiteMaxY = 77f;
+			
+			float PuntoMedioX = (LimiteMaxX+LimiteMinX) / 2;
+			float PuntoMedioY = (LimiteMaxY+LimiteMinY) / 2;
+			
+			float PuntoMedioMinX = (LimiteMinX + PuntoMedioX) / 2;
+			float PuntoMedioMaxX = (LimiteMaxX + PuntoMedioX) / 2;
+			float PuntoMedioMinY = (LimiteMinY + PuntoMedioY) / 2;
+			float PuntoMedioMaxY = (LimiteMaxY + PuntoMedioY) / 2;
+			
+			float panX = pan.deltaTranslation.x;
+			float panY = pan.deltaTranslation.y;
 			Vector3 camPos = Camera.mainCamera.transform.position;
-			float newPosX = Mathf.Clamp(camPos.x + panX, 0, 40);
-			float newPosZ = Mathf.Clamp(camPos.z + panZ, 0, 40);
 
-			Camera.mainCamera.transform.position = new Vector3( newPosX, camPos.y, newPosZ);
-			//Debug.Log( "pan recognizer fired: " + r );
+			
+			Vector3 j = camPos - new Vector3(panX, panY) / 25;
 
+			float jx = Mathf.Clamp(j.x, -82, -23);
+			float jy = Mathf.Clamp(j.y, 55, 77);
+			
+			Vector3 res = new Vector3(jx,jy, j.z);
+			
+			if(jx > PuntoMedioMaxX && jy > PuntoMedioMaxY){
+			}else if(jx > PuntoMedioMaxX && jy < PuntoMedioMinY){
+			}else if(jx < PuntoMedioMinX && jy > PuntoMedioMaxY){
+			}else if(jx < PuntoMedioMinX && jy < PuntoMedioMinY){
+			}else{
+				Camera.mainCamera.transform.position = res;
+			}
 		};
 		
 		// continuous gestures have a complete event so that we know when they are done recognizing
-//		pan.gestureCompleteEvent += r =>
-//		{
-//			//Debug.Log( "pan gesture complete" );
-//		};
+		pan.gestureCompleteEvent += r =>
+		{
+		};
 		TouchKit.addGestureRecognizer( pan );
 		
 		
@@ -37,8 +56,7 @@ public class GestosCamara : MonoBehaviour {
 		var pinch = new TKPinchRecognizer();
 		pinch.gestureRecognizedEvent += ( r ) =>
 		{
-			Camera.mainCamera.fieldOfView = Mathf.Clamp(Camera.mainCamera.fieldOfView + pinch.deltaScale * 2, 40, 75);
-//			Debug.Log( "pinch recognizer fired: " + r );
+			Camera.mainCamera.orthographicSize = Mathf.Clamp(Camera.mainCamera.orthographicSize + pinch.deltaScale*10, 9, 25);
 		};
 		TouchKit.addGestureRecognizer( pinch );
 

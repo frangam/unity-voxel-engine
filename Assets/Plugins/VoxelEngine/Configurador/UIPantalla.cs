@@ -6,7 +6,7 @@ public class UIPantalla : MonoBehaviour {
 	/// <summary>
 	/// Las acciones que se pueden realizar sobre el terreno
 	/// </summary>
-	private Acciones acciones; 
+	private AccionesTerreno acciones; 
 	
 	public Boton botonDestruir;
 	
@@ -23,7 +23,7 @@ public class UIPantalla : MonoBehaviour {
 		botonDestruir.EventPressed += destruirBloque;
 		botonCrearHierba.EventPressed += crearBloqueHierba;
 		
-		acciones = GameObject.Find("Acciones").GetComponent<Acciones>();
+		acciones = GameObject.Find("AccionesTerreno").GetComponent<AccionesTerreno>();
 	}
 	
 	// Update is called once per frame

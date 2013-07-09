@@ -18,6 +18,8 @@ public class Terreno {
 	private int numTotalBloquesEnY;
 	private int numTotalBloquesEnZ;
 	
+	private int nivelAgua;
+	
 	
 	#region estaticas
 	public static int totalChunksX;
@@ -27,24 +29,35 @@ public class Terreno {
 	public static int totalBloquesX;
 	public static int totalBloquesY;
 	public static int totalBloquesZ;
+	
+	public static int nivelDelAgua = 3;
 	#endregion
 	
-	
+	/// <summary>
+	/// Las porciones del terreno
+	/// </summary>
 	public static Chunk[,,] chunks;
 	
-//	public Terreno()
-//	{
-//		chunks = new Chunk[numChunksVisiblesEnX,numChunksVisiblesEnY,numChunksVisiblesEnZ];
-//		inicializarChunks();
-//	}
+	/// <summary>
+	/// camino que se va rellenando con agua (true: contiene agua, false: no la contiene)
+	/// </summary>
+	public static bool[,,] caminoAgua;
+
 	
-	public Terreno(int numChunkX, int numChunkY, int numChunkZ)
+	public Terreno(int numChunkX, int numChunkY, int numChunkZ, int _nivelDelAgua)
 	{
 		numChunksVisiblesEnX = numChunkX;
 		numChunksVisiblesEnY = numChunkY;
 		numChunksVisiblesEnZ = numChunkZ;
+		
 		chunks = new Chunk[numChunkX, numChunkY, numChunkZ];
 		inicializarChunks();
+		
+		//inicializamos el nivel del agua
+		this.nivelAgua = _nivelDelAgua;
+		nivelDelAgua = Mathf.Clamp(_nivelDelAgua, 0, numTotalBloquesEnY);
+		
+		caminoAgua = new bool[totalBloquesX, totalBloquesY, totalBloquesZ]; //inicializo camino de agua; 
 	}
 	
 	#region getters
@@ -132,80 +145,9 @@ public class Terreno {
 		return bloque;
 	}
 	
-//	/// <summary>
-//	/// Modifica un bloque en coordenadas del terreno, para ello debe obtener primero el bloque
-//	/// en coordenadas del terreno tambien.
-//	/// </summary>
-//	/// <param name='bloque'>
-//	/// El nuevo bloque
-//	/// </param>
-//	/// <param name='xTerreno'>
-//	/// X terreno.
-//	/// </param>
-//	/// <param name='yTerreno'>
-//	/// Y terreno.
-//	/// </param>
-//	/// <param name='zTerreno'>
-//	/// Z terreno.
-//	/// </param>
-//	public void setBloque(Bloque bloque, int xTerreno,int yTerreno, int zTerreno){
-//		// primero calculamos las coordenadas del chunk segun las coordenadas del Terreno
-//		int xChunk = (xTerreno / Chunk.numBloquesEnX);
-//		int yChunk = (yTerreno / Chunk.numBloquesEnY);
-//		int zChunk = (zTerreno / Chunk.numBloquesEnZ);
-//		
-//        // comprobamos que las coordenadas del chunk no se salgan del rango
-//        bool coordChunkFueraRango =  (xChunk < 0 || yChunk < 0 || zChunk < 0) || (xChunk >= totalChunksX
-//									|| yChunk >= totalChunksY || zChunk >= totalChunksZ);
-//        //si las coordenadas del chunk no se salen de rango
-//		if(!coordChunkFueraRango){
-//			//calcula las coordenadas de bloque relativas al origen del chunk
-//	        int xBloque = xTerreno % Chunk.numBloquesEnX;
-//	        int yBloque = yTerreno % Chunk.numBloquesEnY;
-//	        int zBloque = zTerreno % Chunk.numBloquesEnZ;
-//			
-//			chunks[xChunk, yChunk, zChunk].setBloque(bloque, xBloque, yBloque, zBloque);
-////			Debug.Log ("Bloque seleccionado: "+xBloque+","+yBloque+","+zBloque);
-//		}
-//		
-//	}
-	
-//	/// <summary>
-//	/// Devuelve el Chunk de una coordenada del terreno.
-//	/// </summary>
-//	/// <returns>
-//	/// El Chunk
-//	/// </returns>
-//	/// <param name='xTerreno'>
-//	/// X terreno.
-//	/// </param>
-//	/// <param name='yTerreno'>
-//	/// Y terreno.
-//	/// </param>
-//	/// <param name='zTerreno'>
-//	/// Z terreno.
-//	/// </param>
-//	public Chunk getChunkPos(Bloque bloque)
-//	{
-//		Chunk chunk = null;
-//		int xChunk = bloque.getXTerreno() / Chunk.numBloquesEnX;
-//		int yChunk = bloque.getYTerreno() / Chunk.numBloquesEnY;
-//		int zChunk = bloque.getZTerreno() / Chunk.numBloquesEnZ;
-//		
-//	  	bool coordChunkFueraRango =  (xChunk < 0 || yChunk < 0 || zChunk < 0) || (xChunk >= totalChunksX
-//									|| yChunk >= totalChunksY || zChunk >= totalChunksZ);
-//		if(!coordChunkFueraRango){
-//			chunk = chunks[xChunk, yChunk, zChunk];	
-//		}
-//		
-//		return chunk;
-//	}
-	
 	public IEnumerator ActualizarChunk(Bloque bloque, bool async = false)
 	{
 		
-		
-//		Chunk ChunkDelBloque = getChunkPos(bloque);
 		Chunk ChunkDelBloque = Chunks.getChunkQueContieneAlBloque(bloque);
 		ChunkDelBloque.seHaModificadoElChunk();
 		refrescarChunkVecinos(ChunkDelBloque, bloque);
@@ -241,7 +183,6 @@ public class Terreno {
 			if(b.esDibujable())
 			{
 				Chunk c = null;
-//				c = getChunkPos(b);
 				c = Chunks.getChunkQueContieneAlBloque(b); //obtenemos el chunk al que pertenece el bloque
 				if ( !chunk.Equals(c))
 					c.seHaModificadoElChunk();
@@ -250,37 +191,6 @@ public class Terreno {
 
 	}
 	
-//	public void ActualizarChunkPorPosicion(Vector3 chunkPos)
-//	{
-//		int x = (int)chunkPos.x;
-//		int y = (int)chunkPos.y;
-//		int z = (int)chunkPos.z;
-//		
-//		if ( (x >= 0 && x < numChunksVisiblesEnX) && (y >= 0 && y < numChunksVisiblesEnY) && (z >= 0 && z < numChunksVisiblesEnZ) )
-//		{
-//			chunks[x,y,z].seHaModificadoElChunk();
-//		}
-//	}
-	
-//	/// <summary>
-//	/// Obtiene la posicion del bloque respecto al chunk, segun las coordenadas del terreno que tiene el bloque
-//	/// </summary>
-//	/// <returns>
-//	/// Devuelve la posicion del bloque respecto a coordenadas del chunk
-//	/// </returns>
-//	/// <param name='bloque'>
-//	/// El bloque
-//	/// </param>
-//	public Vector3 posicionBloqueRespectoChunk(Bloque bloque)
-//	{
-//		Vector3 res = Vector3.zero;
-//		
-//		res.x = bloque.getXTerreno() % numChunksVisiblesEnX;
-//		res.y = bloque.getYTerreno() % numChunksVisiblesEnY;
-//		res.z = bloque.getZTerreno() % numChunksVisiblesEnZ;
-//	
-//		return res;
-//	}
 	#endregion
 	
 	/// <summary>

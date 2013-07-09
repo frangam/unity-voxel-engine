@@ -8,6 +8,4 @@ public interface IBloque{
 	Vector2 posicionUVTexturaCaraInferior();
 	Vector2 posicionUVTexturaCaraLaterales();
 	Vector2 posicionUVTexturaCara();
-//	bool destruirse(Bloque bloque);
-//	bool crearse(Bloque bloque, TipoBloque tipo);
 }

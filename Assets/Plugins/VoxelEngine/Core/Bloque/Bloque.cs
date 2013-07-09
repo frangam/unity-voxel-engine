@@ -178,24 +178,4 @@ public class Bloque : IBloque {
 		return TiposBloques.getBloque(_tipo).crearse(this,tipoBloque);
 	}
 	#endregion
-	
-//	
-//	/// <summary>
-//	/// 	Devuelve el Chunk.
-//	/// </summary>
-//	/// <returns>
-//	/// 	Chunk.
-//	/// </returns>
-//	public Chunk getChunk() { 
-//		return _chunk; 
-//	} 
-//	/// <summary>
-//	/// 	Cambia el Chunk al que pertenece el Bloque.
-//	/// </summary>
-//	/// <param name='chunk'>
-//	/// 	Chunk nuevo.
-//	/// </param>
-//	public void setChunk(Chunk chunk) { 
-//		this._chunk = chunk; 
-//	} 
 }
